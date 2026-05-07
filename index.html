@@ -1,0 +1,157 @@
+<html>
+    <head>
+        <title>Daily Planner</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+          <!-- Daily Tasks section -->
+        <div class="section-div">
+            <div class="section-header">
+                <h2 class="section-title">Daily Tasks</h2>
+                <button id="settings-btn">&#9881;</button>
+            </div>
+            <div id="date-nav">
+                <button id="prev-btn">&#8592;</button>
+                <p id="date-display"></p> 
+                <button id="next-btn">&#8594;</button>
+            </div>
+            <input type="text" id="input-el" placeholder="Add a daily task...">
+            <div id="btn-row">
+                <button id="add-btn">ADD</button>
+            </div>
+            <ul id="ul-el"></ul>
+            <!-- Daily counters -->
+            <div id="daily-counters">
+                <span class="counter-label">Kms:</span>
+                <button class="counter-btn" id="daily-km-minus">-</button>
+                <span class="counter-display" id="daily-km-display">0</span>
+                <button class="counter-btn" id="daily-km-plus">+</button>
+                <span class="counter-label">Pushups:</span>
+                <button class="counter-btn" id="daily-pushups-minus">-</button>
+                <span class="counter-display" id="daily-pushups-display">0</span>
+                <button class="counter-btn" id="daily-pushups-plus">+</button>
+            </div>
+        </div>
+        <!-- Large Tasks section -->
+        <div class="section-div">
+            <h2 class="section-title">Large Tasks</h2>
+            <input type="text" id="large-input-el" placeholder="Add a large task...">
+            <div id="large-btn-row">
+                <button id="large-add-btn">ADD</button>
+            </div>
+            <ul id="large-ul-el"></ul>
+        </div>
+
+        <!-- Tracker section -->
+        <div class="section-div">
+            <h2 class="section-title">Tracker</h2>
+
+            <!-- Timer 1 -->
+            <div class="timer">
+                <p class="timer-label">Free: </p>
+                <p class="timer-display" id="timer1-display">0 Days 0 Hours 0 Minutes 0 Seconds</p>
+                <button class="reset-btn" id="timer1-reset">RESET</button>
+            </div>
+
+            <!-- Timer 2 -->
+            <div class="timer">
+                <p class="timer-label">Sugar Free (Mum's Rules): </p>
+                <p class="timer-display" id="timer2-display">0 Days 0 Hours 0 Minutes 0 Seconds</p>
+                <button class="reset-btn" id="timer2-reset">RESET</button>
+            </div>
+
+            <!-- Kilometers Run (read only) -->
+            <div class="timer">
+                <p class="timer-label">Kilometers Run: </p>
+                <p class="timer-display" id="km-display">0 km</p>
+            </div>
+
+            <!-- Pushups Done (read only) -->
+            <div class="timer">
+                <p class="timer-label">Pushups Done:</p>
+                <p class="timer-display" id="pushups-display">0</p>
+            </div>
+        </div>
+
+        <!-- Goals section -->
+        <div class="section-div">
+            <h2 class="section-title">Goals</h2>
+            <!-- Blank for now -->
+        </div>
+
+       <!-- Settings popup -->
+        <div id="settings-overlay" class="hidden">
+            <div id="settings-popup">
+                <div class="section-header">
+                    <h2 class="section-title">Settings</h2>
+                    <button id="settings-close">&#10005;</button>
+                </div>
+
+                <!-- Scroll toggle -->
+                <div class="settings-row">
+                    <span class="settings-label">Scroll</span>
+                    <label class="toggle">
+                        <input type="checkbox" id="scroll-toggle">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+
+                <!-- Weekly reminders -->
+                <div class="settings-row-title">Weekly Reminders</div>
+                <div class="settings-days">
+                    <div class="settings-day">
+                        <span class="settings-label">Monday</span>
+                        <label class="toggle">
+                            <input type="checkbox" class="reminder-toggle" data-day="monday">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="settings-day">
+                        <span class="settings-label">Tuesday</span>
+                        <label class="toggle">
+                            <input type="checkbox" class="reminder-toggle" data-day="tuesday">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="settings-day">
+                        <span class="settings-label">Wednesday</span>
+                        <label class="toggle">
+                            <input type="checkbox" class="reminder-toggle" data-day="wednesday">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="settings-day">
+                        <span class="settings-label">Thursday</span>
+                        <label class="toggle">
+                            <input type="checkbox" class="reminder-toggle" data-day="thursday">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="settings-day">
+                        <span class="settings-label">Friday</span>
+                        <label class="toggle">
+                            <input type="checkbox" class="reminder-toggle" data-day="friday">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="settings-day">
+                        <span class="settings-label">Saturday</span>
+                        <label class="toggle">
+                            <input type="checkbox" class="reminder-toggle" data-day="saturday">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="settings-day">
+                        <span class="settings-label">Sunday</span>
+                        <label class="toggle">
+                            <input type="checkbox" class="reminder-toggle" data-day="sunday">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="module" src="dist/bundle.js"></script>
+    </body>
+</html>
