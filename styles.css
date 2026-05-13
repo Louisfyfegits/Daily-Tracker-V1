@@ -1,3 +1,25 @@
+/* --- Global Variables --- */
+:root {
+    /* Main Theme */
+    --primary-color: rgb(92, 92, 92);
+    --primary-hover: rgb(44, 44, 44);
+
+    /* Light Theme Colors */
+    --secondary-color: rgb(243, 243, 243);
+    --border-light: rgb(237, 237, 237);
+
+    /* Neutral Colors - probs should later be labelled to like text and what they are controlling*/
+    --white: #fff;
+    --black: #000;
+    --text-dark: #333;
+    --text-light: #aaa;
+    --text-muted: #ccc;
+
+    /* Danger */
+    --danger-color: red;
+    --danger-bg: #fee;
+}
+
 /* --- Base --- */
 body {
     margin: 0;
@@ -11,11 +33,11 @@ body {
 .section-div {
     width: 95%;
     margin: 10px auto;
-    border: 2px solid rgb(127, 140, 255);
+    border: 2px solid var(--primary-color);
     border-radius: 12px;
     padding: 10px;
     box-sizing: border-box;
-    background-color: rgb(235, 237, 255);
+    background-color: var(--secondary-color);
     position: relative;
 }
 
@@ -28,7 +50,7 @@ body {
 }
 
 .section-title {
-    color: rgb(127, 140, 255);
+    color: var(--primary-color);
     font-weight: 900;
     margin: 0;
     font-size: 14px;
@@ -39,7 +61,7 @@ body {
     background: none;
     border: none;
     font-size: 14px;
-    color: rgb(127, 140, 255);
+    color: var(--primary-color);
     cursor: pointer;
     padding: 0;
     position: absolute;
@@ -47,7 +69,7 @@ body {
 }
 
 #settings-btn:hover {
-    color: rgb(100, 115, 240);
+    color: var(--primary-hover);
 }
 
 /* --- Date Nav --- */
@@ -69,26 +91,26 @@ body {
 
 .date-label {
     font-size: 10px;
-    color: rgb(127, 140, 255);
+    color: var(--primary-color);
     font-weight: 400;
 }
 
 .date-main {
     font-size: 18px;
-    color: rgb(127, 140, 255);
+    color: var(--primary-color);
     font-weight: 900;
 }
 
 .date-day {
     font-size: 13px;
-    color: rgb(127, 140, 255);
+    color: var(--primary-color);
     font-weight: 500;
 }
 
 /* --- Input --- */
 input {
     width: 100%;
-    border: 1px solid black;
+    border: 1px solid var(--black);
     margin: 10px auto 10px;
     border-radius: 5px;
     padding: 5px;
@@ -97,19 +119,19 @@ input {
 
 /* --- Buttons --- */
 button {
-    background-color: rgb(127, 140, 255);
+    background-color: var(--primary-color);
     border: none;
     padding: 10px 20px;
     border-radius: 10px;
     cursor: pointer;
-    color: white;
+    color: var(--white);
     font-family: Arial, Helvetica, sans-serif;
     font-size: 12px;
     font-weight: bold;
 }
 
 button:hover {
-    background-color: rgb(100, 115, 240);
+    background-color: var(--primary-hover);
 }
 
 #prev-btn, #next-btn {
@@ -143,36 +165,36 @@ li {
 .checkbox {
     width: 18px;
     height: 18px;
-    border: 2px solid rgb(127, 140, 255);
+    border: 2px solid var(--primary-color);
     border-radius: 4px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 12px;
-    color: rgb(127, 140, 255);
+    color: var(--primary-color);
     flex-shrink: 0;
 }
 
 li.done .checkbox {
-    background-color: rgb(127, 140, 255);
-    color: white;
+    background-color: var(--primary-color);
+    color: var(--white);
 }
 
 .task-text {
     flex: 1;
-    color: #333;
+    color: var(--text-dark);
     font-size: 14px;
     cursor: pointer;
 }
 
 li.done .task-text {
     text-decoration: line-through;
-    color: #aaa;
+    color: var(--text-light);
 }
 
 .delete-task {
-    color: #ccc;
+    color: var(--text-muted);
     cursor: pointer;
     font-size: 12px;
     padding: 2px 5px;
@@ -180,8 +202,8 @@ li.done .task-text {
 }
 
 .delete-task:hover {
-    color: red;
-    background-color: #fee;
+    color: var(--danger-color);
+    background-color: var(--danger-bg);
 }
 
 /* --- Timers --- */
@@ -190,7 +212,7 @@ li.done .task-text {
     align-items: center;
     gap: 8px;
     padding: 6px 0;
-    border-bottom: 1px solid rgb(200, 205, 255);
+    border-bottom: 1px solid var(--border-light);
 }
 
 .timer:last-child {
@@ -200,7 +222,7 @@ li.done .task-text {
 .timer-label {
     margin: 0;
     font-weight: 900;
-    color: rgb(127, 140, 255);
+    color: var(--primary-color);
     font-size: 11px;
     white-space: nowrap;
 }
@@ -208,7 +230,7 @@ li.done .task-text {
 .timer-display {
     margin: 0;
     font-size: 11px;
-    color: rgb(127, 140, 255);
+    color: var(--primary-color);
     flex: 1;
 }
 
@@ -229,13 +251,13 @@ li.done .task-text {
 }
 
 .counter-label {
-    color: rgb(127, 140, 255);
+    color: var(--primary-color);
     font-size: 10px;
     font-weight: 900;
 }
 
 .counter-display {
-    color: rgb(127, 140, 255);
+    color: var(--primary-color);
     font-size: 10px;
     min-width: 16px;
     text-align: center;
@@ -244,7 +266,7 @@ li.done .task-text {
 .counter-btn {
     background-color: transparent;
     border: none;
-    color: rgb(127, 140, 255);
+    color: var(--primary-color);
     font-size: 12px;
     padding: 0 3px;
     cursor: pointer;
@@ -252,7 +274,7 @@ li.done .task-text {
 }
 
 .counter-btn:hover {
-    color: rgb(228, 231, 253);
+    color: var(--secondary-color);
 }
 
 /* --- Settings Popup --- */
@@ -274,8 +296,8 @@ li.done .task-text {
 }
 
 #settings-popup {
-    background-color: white;
-    border: 2px solid rgb(127, 140, 255);
+    background-color: var(--white);
+    border: 2px solid var(--primary-color);
     border-radius: 12px;
     padding: 20px;
     width: 80%;
@@ -287,7 +309,7 @@ li.done .task-text {
     background: none;
     border: none;
     font-size: 14px;
-    color: rgb(127, 140, 255);
+    color: var(--primary-color);
     cursor: pointer;
     padding: 0;
     position: absolute;
@@ -300,11 +322,11 @@ li.done .task-text {
     align-items: center;
     justify-content: space-between;
     padding: 8px 0;
-    border-bottom: 1px solid rgb(200, 205, 255);
+    border-bottom: 1px solid var(--border-light);
 }
 
 .settings-row-title {
-    color: rgb(127, 140, 255);
+    color: var(--primary-color);
     font-weight: 900;
     font-size: 13px;
     margin-top: 10px;
@@ -312,7 +334,7 @@ li.done .task-text {
 }
 
 .settings-label {
-    color: rgb(127, 140, 255);
+    color: var(--primary-color);
     font-size: 13px;
     font-weight: 500;
 }
@@ -328,7 +350,7 @@ li.done .task-text {
     align-items: center;
     justify-content: space-between;
     padding: 5px 0;
-    border-bottom: 1px solid rgb(200, 205, 255);
+    border-bottom: 1px solid var(--border-light);
 }
 
 .settings-day:last-child {
@@ -358,7 +380,7 @@ li.done .task-text {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #ccc;
+    background-color: var(--text-muted);
     border-radius: 20px;
     transition: 0.3s;
 }
@@ -370,13 +392,13 @@ li.done .task-text {
     width: 14px;
     left: 3px;
     bottom: 3px;
-    background-color: white;
+    background-color: var(--white);
     border-radius: 50%;
     transition: 0.3s;
 }
 
 .toggle input:checked + .toggle-slider {
-    background-color: rgb(127, 140, 255);
+    background-color: var(--primary-color);
 }
 
 .toggle input:checked + .toggle-slider:before {
@@ -393,6 +415,6 @@ li.done .task-text {
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: rgb(127, 140, 255);
+    background-color: var(--primary-color);
     border-radius: 10px;
 }

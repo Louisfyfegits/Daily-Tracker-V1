@@ -100,6 +100,23 @@ taskList.addEventListener("click", (e) => {
     }
 })
 
+// --- Swipe Event Listeners ---
+let touchStartX = null
+
+document.addEventListener("touchstart", (e) => {
+    touchStartX = e.touches[0].clientX
+})
+
+document.addEventListener("touchend", (e) => {
+    if (touchStartX === null) return
+    const diff = touchStartX - e.changedTouches[0].clientX
+    if (Math.abs(diff) < 35) return         // ignore small swipes
+    if (diff > 0) navigateDay(1)            // swiped left  → next day
+    else navigateDay(-1)                    // swiped right → prev day
+    touchStartX = null
+})
+
+
 // --- Large Task Event Delegation ---
 largeTaskList.addEventListener("click", (e) => {
     const li = e.target.closest("li")
