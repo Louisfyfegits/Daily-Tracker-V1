@@ -442,6 +442,13 @@ li.done .task-text {
     color: var(--white);
 }
 
+.tab-pane {
+    display: none;
+}
+
+.tab-pane[data-tab="home"] {
+    display: block;
+}
 
 /* --- Scrollbar --- */
 ::-webkit-scrollbar {
