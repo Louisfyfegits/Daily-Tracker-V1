@@ -1,7 +1,8 @@
 // Imports
 import { currentDate, currentTab, setCurrentTab } from "./state.js"
 import { navigateDay } from "./navigation.js"
-import { addTask, removeTask, toggleTask, addLargeTask, removeLargeTask, updateDailyCounter } from "../data/days.js"
+import { addTask, removeTask, toggleTask, updateDailyCounter } from "../data/days.js"
+import { addLargeTask, removeLargeTask } from "../data/tasks.js"
 import { resetTimer, updateCounter } from "../data/trackers.js"
 
 // --- Daily Task Element References ---

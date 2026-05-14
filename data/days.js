@@ -1,19 +1,18 @@
 // Imports
 import { db } from "../firebase.js"
 import { 
-    collection,     // references an entire collection (e.g. all Days)
-    doc,            // references a specific document (e.g. one Day)
-    setDoc,         // creates or overwrites a document
-    updateDoc,      // updates specific fields in a document without overwriting
-    deleteDoc,      // deletes an entire document
-    onSnapshot,     // listens for real time changes in the database
-    deleteField,    // removes a specific field from a document
-    increment       // increments a numeric field by a specified amount
+    collection,
+    doc,
+    setDoc,
+    updateDoc,
+    deleteDoc,
+    onSnapshot,
+    deleteField,
+    increment
 } from "firebase/firestore"
 
 // Database references
 const daysRef = collection(db, "Days")
-const largeTasksRef = collection(db, "LargeTasks")
 
 // Returns today's date as a string e.g. "01-05-2026"
 export function getToday() {
@@ -59,31 +58,6 @@ export function listenForDays(callback) {
             days[doc.id] = doc.data()
         })
         callback(days)
-    })
-}
-
-// --- Large Tasks ---
-
-// Adds a large task
-export async function addLargeTask(task) {
-    await setDoc(doc(largeTasksRef, Date.now().toString()), {
-        task: task
-    })
-}
-
-// Removes a large task
-export async function removeLargeTask(taskId) {
-    await deleteDoc(doc(db, "LargeTasks", taskId))
-}
-
-// Listens for changes to large tasks
-export function listenForLargeTasks(callback) {
-    onSnapshot(largeTasksRef, (snapshot) => {
-        const largeTasks = {}
-        snapshot.forEach(doc => {
-            largeTasks[doc.id] = doc.data().task
-        })
-        callback(largeTasks)
     })
 }
 

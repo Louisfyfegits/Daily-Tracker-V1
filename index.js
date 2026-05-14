@@ -1,7 +1,8 @@
 // Imports
 import { setDays, setTimer1Interval, setTimer2Interval, currentDate } from "./logic/state.js"
 import { renderDate, renderTasks, renderLargeTasks } from "./ui/render.js"
-import { listenForDays, listenForLargeTasks } from "./data/days.js"
+import { listenForDays } from "./data/days.js"
+import { listenForLargeTasks } from "./data/tasks.js"
 import { listenForTimer, listenForCounter } from "./data/trackers.js"
 import { startTimerInterval } from "./logic/utils.js"
 import { updateDailyCounterDisplay } from "./logic/navigation.js"
