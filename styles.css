@@ -1,8 +1,8 @@
 /* --- Global Variables --- */
 :root {
     /* Main Theme */
-    --primary-color: rgb(92, 92, 92);
-    --primary-hover: rgb(44, 44, 44);
+    --primary-color: rgb(0, 0, 0);
+    --primary-hover: rgb(66, 66, 66);
 
     /* Light Theme Colors */
     --secondary-color: rgb(243, 243, 243);
@@ -277,6 +277,17 @@ li.done .task-text {
     color: var(--secondary-color);
 }
 
+.tracker-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    font-weight: 900;
+    color: var(--primary-color);
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--border-light);
+    margin-bottom: 4px;
+}
+
 /* --- Settings Popup --- */
 #settings-overlay.hidden {
     display: none;
@@ -312,9 +323,8 @@ li.done .task-text {
     color: var(--primary-color);
     cursor: pointer;
     padding: 0;
-    position: absolute;
-    right: 20px;
-    top: 20px;
+    margin-left:auto;
+
 }
 
 .settings-row {
@@ -404,6 +414,34 @@ li.done .task-text {
 .toggle input:checked + .toggle-slider:before {
     transform: translateX(16px);
 }
+
+/* --- Tabs --- */
+#tab-bar {
+    display: flex;
+    gap: 8px;
+}
+
+.tab-btn {
+    flex: 1;
+    background-color: transparent;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    font-weight: bold;
+    border-radius: 8px;
+    padding: 6px 0;
+    cursor: pointer;
+}
+
+.tab-btn.active {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+.tab-btn:hover {
+    background-color: var(--primary-hover);
+    color: var(--white);
+}
+
 
 /* --- Scrollbar --- */
 ::-webkit-scrollbar {

@@ -8,7 +8,7 @@ The browser can't load all the separate JS files and imports (especially firebas
 
 - `npm install` — run this on a fresh clone to download node_modules (all the dependencies)
 - `npm run build` — bundles everything once into dist/bundle.js
-- `npm run watch` — same as build but watches for file changes and rebuilds automatically, use this while developing
+- `npm run watch` — same as build but watches for file changes and rebuilds automatically, use this while developing (why when i had the cmd closed did the css update, do css updates ignore this)
 
 ---
 

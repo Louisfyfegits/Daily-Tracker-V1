@@ -5,90 +5,129 @@
         <link rel="stylesheet" href="styles.css">
     </head>
     <body>
-          <!-- Daily Tasks section -->
-        <div class="section-div">
+        <!-- Daily Tasks section (global, always visible) -->
+        <div class="section-div" id="daily-tasks-section">
             <div class="section-header">
-                <h2 class="section-title">Daily Tasks</h2>
                 <button id="settings-btn">&#9881;</button>
+                <h2 class="section-title">Daily Tasks</h2>
             </div>
             <div id="date-nav">
                 <button id="prev-btn">&#8592;</button>
-                <p id="date-display"></p> 
+                <p id="date-display"></p>
                 <button id="next-btn">&#8594;</button>
             </div>
-            <input type="text" id="input-el" placeholder="Add a daily task...">
-            <div id="btn-row">
-                <button id="add-btn">ADD</button>
-            </div>
             <ul id="ul-el"></ul>
-            <!-- Daily counters -->
-            <div id="daily-counters">
-                <span class="counter-label">Kms:</span>
-                <button class="counter-btn" id="daily-km-minus">-</button>
-                <span class="counter-display" id="daily-km-display">0</span>
-                <button class="counter-btn" id="daily-km-plus">+</button>
-                <span class="counter-label">Pushups:</span>
-                <button class="counter-btn" id="daily-pushups-minus">-</button>
-                <span class="counter-display" id="daily-pushups-display">0</span>
-                <button class="counter-btn" id="daily-pushups-plus">+</button>
-            </div>
-        </div>
-        <!-- Large Tasks section -->
-        <div class="section-div">
-            <h2 class="section-title">Large Tasks</h2>
-            <input type="text" id="large-input-el" placeholder="Add a large task...">
-            <div id="large-btn-row">
-                <button id="large-add-btn">ADD</button>
-            </div>
-            <ul id="large-ul-el"></ul>
         </div>
 
-        <!-- Tracker section -->
-        <div class="section-div">
-            <h2 class="section-title">Tracker</h2>
-
-            <!-- Timer 1 -->
-            <div class="timer">
-                <p class="timer-label">Free: </p>
-                <p class="timer-display" id="timer1-display">0 Days 0 Hours 0 Minutes 0 Seconds</p>
-                <button class="reset-btn" id="timer1-reset">RESET</button>
-            </div>
-
-            <!-- Timer 2 -->
-            <div class="timer">
-                <p class="timer-label">Sugar Free (Mum's Rules): </p>
-                <p class="timer-display" id="timer2-display">0 Days 0 Hours 0 Minutes 0 Seconds</p>
-                <button class="reset-btn" id="timer2-reset">RESET</button>
-            </div>
-
-            <!-- Kilometers Run (read only) -->
-            <div class="timer">
-                <p class="timer-label">Kilometers Run: </p>
-                <p class="timer-display" id="km-display">0 km</p>
-            </div>
-
-            <!-- Pushups Done (read only) -->
-            <div class="timer">
-                <p class="timer-label">Pushups Done:</p>
-                <p class="timer-display" id="pushups-display">0</p>
-            </div>
+        <!-- Tab bar (global, always visible) -->
+        <div class="section-div" id="tab-bar">
+            <button class="tab-btn active" data-tab="home">Home</button>
+            <button class="tab-btn" data-tab="gym">Gym</button>
+            <button class="tab-btn" data-tab="hobbies">Hobbies</button>
         </div>
 
-        <!-- Goals section -->
-        <div class="section-div">
-            <h2 class="section-title">Goals</h2>
-            <!-- Blank for now -->
+        <!-- Tab content wrapper -->
+        <div id="tab-content">
+
+            <!-- Home tab -->
+            <div class="tab-pane" data-tab="home">
+                <div class="section-div">
+                    <input type="text" id="input-el" placeholder="Add a daily task...">
+                    <div id="btn-row">
+                        <button id="add-btn">ADD</button>
+                    </div>
+                </div>
+                <div class="section-div">
+                    <h2 class="section-title">Large Tasks</h2>
+                    <input type="text" id="large-input-el" placeholder="Add a large task...">
+                    <div id="large-btn-row">
+                        <button id="large-add-btn">ADD</button>
+                    </div>
+                    <ul id="large-ul-el"></ul>
+                </div>
+                <div class="section-div">
+                    <h2 class="section-title">Tracker</h2>
+                    <div class="timer">
+                        <p class="timer-label">Free: </p>
+                        <p class="timer-display" id="timer1-display">0 Days 0 Hours 0 Minutes 0 Seconds</p>
+                        <button class="reset-btn" id="timer1-reset">RESET</button>
+                    </div>
+                    <div class="timer">
+                        <p class="timer-label">Sugar Free (Mum's Rules): </p>
+                        <p class="timer-display" id="timer2-display">0 Days 0 Hours 0 Minutes 0 Seconds</p>
+                        <button class="reset-btn" id="timer2-reset">RESET</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gym tab -->
+            <div class="tab-pane" data-tab="gym">
+                <div class="section-div">
+                    <input type="text" id="gym-input-el" placeholder="Add a gym task...">
+                    <div>
+                        <button id="gym-add-btn">ADD</button>
+                    </div>
+                </div>
+                <div class="section-div">
+                    <h2 class="section-title">Tracker</h2>
+                    <div class="tracker-header">
+                        <span>Total</span>
+                        <span>Today</span>
+                    </div>
+                    <div class="timer">
+                        <p class="timer-label">Kilometers Run: </p>
+                        <p class="timer-display" id="km-display">0 km</p>
+                        <button class="counter-btn" id="daily-km-minus">-</button>
+                        <span class="counter-display" id="daily-km-display">0</span>
+                        <button class="counter-btn" id="daily-km-plus">+</button>
+                    </div>
+                    <div class="timer">
+                        <p class="timer-label">Pushups Done:</p>
+                        <p class="timer-display" id="pushups-display">0</p>
+                        <button class="counter-btn" id="daily-pushups-minus">-</button>
+                        <span class="counter-display" id="daily-pushups-display">0</span>
+                        <button class="counter-btn" id="daily-pushups-plus">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hobbies tab -->
+            <div class="tab-pane" data-tab="hobbies">
+                <div class="section-div">
+                    <h2 class="section-title">Skating</h2>
+                    <input type="text" id="skating-input-el" placeholder="Add a skating task...">
+                    <div>
+                        <button id="skating-add-btn">ADD</button>
+                    </div>
+                    <ul id="skating-ul-el"></ul>
+                </div>
+                <div class="section-div">
+                    <h2 class="section-title">Warhammer</h2>
+                    <input type="text" id="warhammer-input-el" placeholder="Add a warhammer task...">
+                    <div>
+                        <button id="warhammer-add-btn">ADD</button>
+                    </div>
+                    <ul id="warhammer-ul-el"></ul>
+                </div>
+                <div class="section-div">
+                    <h2 class="section-title">Guitar</h2>
+                    <input type="text" id="guitar-input-el" placeholder="Add a guitar task...">
+                    <div>
+                        <button id="guitar-add-btn">ADD</button>
+                    </div>
+                    <ul id="guitar-ul-el"></ul>
+                </div>
+            </div>
+
         </div>
 
-       <!-- Settings popup -->
+        <!-- Settings popup -->
         <div id="settings-overlay" class="hidden">
             <div id="settings-popup">
                 <div class="section-header">
                     <h2 class="section-title">Settings</h2>
                     <button id="settings-close">&#10005;</button>
                 </div>
-
-                <!-- Scroll toggle -->
                 <div class="settings-row">
                     <span class="settings-label">Scroll</span>
                     <label class="toggle">
@@ -96,62 +135,9 @@
                         <span class="toggle-slider"></span>
                     </label>
                 </div>
-
-                <!-- Weekly reminders -->
-                <div class="settings-row-title">Weekly Reminders</div>
-                <div class="settings-days">
-                    <div class="settings-day">
-                        <span class="settings-label">Monday</span>
-                        <label class="toggle">
-                            <input type="checkbox" class="reminder-toggle" data-day="monday">
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                    <div class="settings-day">
-                        <span class="settings-label">Tuesday</span>
-                        <label class="toggle">
-                            <input type="checkbox" class="reminder-toggle" data-day="tuesday">
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                    <div class="settings-day">
-                        <span class="settings-label">Wednesday</span>
-                        <label class="toggle">
-                            <input type="checkbox" class="reminder-toggle" data-day="wednesday">
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                    <div class="settings-day">
-                        <span class="settings-label">Thursday</span>
-                        <label class="toggle">
-                            <input type="checkbox" class="reminder-toggle" data-day="thursday">
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                    <div class="settings-day">
-                        <span class="settings-label">Friday</span>
-                        <label class="toggle">
-                            <input type="checkbox" class="reminder-toggle" data-day="friday">
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                    <div class="settings-day">
-                        <span class="settings-label">Saturday</span>
-                        <label class="toggle">
-                            <input type="checkbox" class="reminder-toggle" data-day="saturday">
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                    <div class="settings-day">
-                        <span class="settings-label">Sunday</span>
-                        <label class="toggle">
-                            <input type="checkbox" class="reminder-toggle" data-day="sunday">
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                </div>
             </div>
         </div>
+
         <script type="module" src="dist/bundle.js"></script>
     </body>
 </html>
