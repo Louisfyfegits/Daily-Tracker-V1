@@ -23,7 +23,7 @@
     --gym-color: rgb(0, 180, 180);
     --gym-bg: rgba(0, 180, 180, 0.393);
     --hobbies-color: rgb(140, 60, 200);
-    --hobbies-bg: rgba(117, 20, 192, 0.368);
+    --hobbies-bg: rgba(117, 20, 192, 0.221);
     --work-color: rgb(97, 97, 98);
     --work-bg: rgba(1, 1, 1, 0.163);
 }
@@ -74,6 +74,70 @@ li[data-tab="work"] .delete-task {
 li .delete-task:hover {
     color: var(--danger-color);
     background-color: var(--danger-bg);
+}
+
+.tab-pane[data-tab="gym"] .section-div {
+    border-color: var(--gym-color);
+}
+
+.tab-pane[data-tab="hobbies"] .section-div {
+    border-color: var(--hobbies-color);
+}
+
+.tab-pane[data-tab="work"] .section-div {
+    border-color: var(--work-color);
+}
+
+.tab-pane[data-tab="gym"] .section-div {
+    border-color: var(--gym-color);
+    background-color: var(--gym-bg);
+}
+
+.tab-pane[data-tab="hobbies"] .section-div {
+    border-color: var(--hobbies-color);
+    background-color: var(--hobbies-bg);
+}
+
+.tab-pane[data-tab="work"] .section-div {
+    border-color: var(--work-color);
+    background-color: var(--work-bg);
+}
+
+
+.tab-pane[data-tab="gym"] .section-div button,
+.tab-pane[data-tab="gym"] .section-div h2,
+.tab-pane[data-tab="gym"] .section-div input {
+    border-color: var(--gym-color);
+    color: var(--gym-color);
+}
+
+.tab-pane[data-tab="gym"] .section-div button {
+    background-color: var(--gym-color);
+    color: var(--white);
+}
+
+.tab-pane[data-tab="hobbies"] .section-div button,
+.tab-pane[data-tab="hobbies"] .section-div h2,
+.tab-pane[data-tab="hobbies"] .section-div input {
+    border-color: var(--hobbies-color);
+    color: var(--hobbies-color);
+}
+
+.tab-pane[data-tab="hobbies"] .section-div button {
+    background-color: var(--hobbies-color);
+    color: var(--white);
+}
+
+.tab-pane[data-tab="work"] .section-div button,
+.tab-pane[data-tab="work"] .section-div h2,
+.tab-pane[data-tab="work"] .section-div input {
+    border-color: var(--work-color);
+    color: var(--work-color);
+}
+
+.tab-pane[data-tab="work"] .section-div button {
+    background-color: var(--work-color);
+    color: var(--white);
 }
 /* --- Base --- */
 body {
