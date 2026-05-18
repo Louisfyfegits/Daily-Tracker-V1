@@ -1,9 +1,13 @@
 // Imports
-import { currentDate, currentTab, setCurrentTab } from "./state.js"
+import { currentDate, currentTab, setCurrentTab, getCurrentDate, getCurrentTab } from "./state.js"
 import { navigateDay } from "./navigation.js"
 import { addTask, removeTask, toggleTask, updateDailyCounter } from "../data/days.js"
-import { addLargeTask, removeLargeTask } from "../data/tasks.js"
+import { addLargeTask, removeLargeTask, addGuitarSkill, removeGuitarSkill, 
+         toggleGuitarSkill, addSkatingSkill, removeSkatingSkill, toggleSkatingSkill
+        , addAssignment, removeAssignment } from "../data/tasks.js"
 import { resetTimer, updateCounter } from "../data/trackers.js"
+import { renderGuitarSkills, renderSkatingSkills,renderAssignments } from "../ui/render.js"
+
 
 // --- Daily Task Element References ---
 const addButton = document.getElementById("add-btn")
@@ -35,6 +39,25 @@ const settingsClose = document.getElementById("settings-close")
 // --- Tab Element References ---
 const tabButtons = document.querySelectorAll(".tab-btn")
 const tabPanes = document.querySelectorAll(".tab-pane")
+
+// --- Guitar Element References ---
+const guitarInput = document.getElementById("guitar-input-el")
+const guitarAddBtn = document.getElementById("guitar-add-btn")
+const guitarList = document.getElementById("guitar-ul-el")
+const guitarSessionBtn = document.getElementById("guitar-session-btn")
+
+// --- Skating Element References ---
+const skatingInput = document.getElementById("skating-input-el")
+const skatingAddBtn = document.getElementById("skating-add-btn")
+const skatingList = document.getElementById("skating-ul-el")
+const skatingSessionBtn = document.getElementById("skating-session-btn")
+
+// --- Work Element References ---
+const studyInput = document.getElementById("study-input-el")
+const studyAddBtn = document.getElementById("study-add-btn")
+const assignmentsInput = document.getElementById("assignments-input-el")
+const assignmentsAddBtn = document.getElementById("assignments-add-btn")
+const assignmentsList = document.getElementById("assignments-ul-el")
 
 // --- Daily Task Event Listeners ---
 addButton.addEventListener("click", saveTask)
@@ -89,6 +112,68 @@ tabButtons.forEach(btn => {
     })
 })
 
+// --- Work Event Listeners ---
+studyAddBtn.addEventListener("click", saveStudyTask)
+studyInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") saveStudyTask()
+})
+
+assignmentsAddBtn.addEventListener("click", saveAssignment)
+assignmentsInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") saveAssignment()
+})
+
+assignmentsList.addEventListener("click", (e) => {
+    const li = e.target.closest("li")
+    if (!li) return
+    if (e.target.classList.contains("delete-task")) removeAssignment(li.dataset.taskId)
+})
+
+// --- Guitar Event Listeners ---
+
+guitarAddBtn.addEventListener("click", saveGuitarSkill)
+guitarInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") saveGuitarSkill()
+})
+
+guitarSessionBtn.addEventListener("click", () => {
+    addTask(getCurrentDate(), "Guitar practice", "hobbies")
+})
+
+
+guitarList.addEventListener("click", (e) => {
+    const li = e.target.closest("li")
+    if (!li) return
+    const skillId = li.dataset.skillId
+    const learned = li.dataset.learned === "true"
+
+    if (e.target.classList.contains("checkbox")) {
+        toggleGuitarSkill(skillId, learned)
+    } else if (e.target.classList.contains("delete-skill")) {
+        removeGuitarSkill(skillId)
+    }
+})
+
+// --- Skating Event Listeners ---
+skatingAddBtn.addEventListener("click", saveSkatingSkill)
+skatingInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") saveSkatingSkill()
+})
+skatingSessionBtn.addEventListener("click", () => {
+    addTask(currentDate, "Skate", "hobbies")
+})
+skatingList.addEventListener("click", (e) => {
+    const li = e.target.closest("li")
+    if (!li) return
+    const skillId = li.dataset.skillId
+    const learned = li.dataset.learned === "true"
+    if (e.target.classList.contains("checkbox")) {
+        toggleSkatingSkill(skillId, learned)
+    } else if (e.target.classList.contains("delete-skill")) {
+        removeSkatingSkill(skillId)
+    }
+})
+
 // --- Swipe Event Listeners ---
 let touchStartX = null
 
@@ -135,7 +220,7 @@ largeTaskList.addEventListener("click", (e) => {
 async function saveTask() {
     const task = taskInput.value.trim()
     if (task === "") return
-    await addTask(currentDate, task)
+    await addTask(currentDate, task, currentTab)
     taskInput.value = ""
 }
 
@@ -145,4 +230,34 @@ async function saveLargeTask() {
     if (task === "") return
     await addLargeTask(task)
     largeTaskInput.value = ""
+}
+
+// Saves a new guitar skill after cleaning
+async function saveGuitarSkill() {
+    const skill = guitarInput.value.trim()
+    if (skill === "") return
+    await addGuitarSkill(skill)
+    guitarInput.value = ""
+}
+
+// Saves a new skating skill
+async function saveSkatingSkill() {
+    const skill = skatingInput.value.trim()
+    if (skill === "") return
+    await addSkatingSkill(skill)
+    skatingInput.value = ""
+}
+
+async function saveStudyTask() {
+    const task = studyInput.value.trim()
+    if (task === "") return
+    await addTask(getCurrentDate(), task, "work")
+    studyInput.value = ""
+}
+
+async function saveAssignment() {
+    const task = assignmentsInput.value.trim()
+    if (task === "") return
+    await addAssignment(task)
+    assignmentsInput.value = ""
 }

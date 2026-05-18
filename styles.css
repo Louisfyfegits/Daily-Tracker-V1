@@ -1,14 +1,14 @@
 /* --- Global Variables --- */
 :root {
     /* Main Theme */
-    --primary-color: rgb(0, 0, 0);
-    --primary-hover: rgb(66, 66, 66);
+    --primary-color: rgb(60, 80, 160);
+    --primary-hover: rgb(90, 120, 190);
 
     /* Light Theme Colors */
-    --secondary-color: rgb(243, 243, 243);
-    --border-light: rgb(237, 237, 237);
+    --secondary-color: rgb(240, 243, 250);
+    --border-light: rgb(210, 220, 240);
 
-    /* Neutral Colors - probs should later be labelled to like text and what they are controlling*/
+    /* Neutral Colors */
     --white: #fff;
     --black: #000;
     --text-dark: #333;
@@ -18,8 +18,63 @@
     /* Danger */
     --danger-color: red;
     --danger-bg: #fee;
+
+   /* Tab Colors */
+    --gym-color: rgb(0, 180, 180);
+    --gym-bg: rgba(0, 180, 180, 0.393);
+    --hobbies-color: rgb(140, 60, 200);
+    --hobbies-bg: rgba(117, 20, 192, 0.368);
+    --work-color: rgb(97, 97, 98);
+    --work-bg: rgba(1, 1, 1, 0.163);
 }
 
+/* --- Tab Colors --- */
+li[data-tab="gym"] {
+    border: 1px solid var(--gym-color);
+    background-color: var(--gym-bg);
+    border-radius: 6px;
+    padding: 4px 6px;
+}
+
+li[data-tab="hobbies"] {
+    border: 1px solid var(--hobbies-color);
+    background-color: var(--hobbies-bg);
+    border-radius: 6px;
+    padding: 4px 6px;
+}
+
+li[data-tab="work"] {
+    border: 1px solid var(--work-color);
+    background-color: var(--work-bg);
+    border-radius: 6px;
+    padding: 4px 6px;
+}
+
+li[data-tab="gym"] .checkbox,
+li[data-tab="gym"] .task-text,
+li[data-tab="gym"] .delete-task {
+    color: var(--gym-color);
+    border-color: var(--gym-color);
+}
+
+li[data-tab="hobbies"] .checkbox,
+li[data-tab="hobbies"] .task-text,
+li[data-tab="hobbies"] .delete-task {
+    color: var(--hobbies-color);
+    border-color: var(--hobbies-color);
+}
+
+li[data-tab="work"] .checkbox,
+li[data-tab="work"] .task-text,
+li[data-tab="work"] .delete-task {
+    color: var(--work-color);
+    border-color: var(--work-color);
+}
+
+li .delete-task:hover {
+    color: var(--danger-color);
+    background-color: var(--danger-bg);
+}
 /* --- Base --- */
 body {
     margin: 0;
@@ -144,6 +199,23 @@ button:hover {
     display: flex;
     gap: 8px;
     margin-top: 5px;
+}
+
+.session-btn {
+    background: none;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+}
+
+.session-btn:hover {
+    background-color: var(--primary-color);
+    color: var(--white);
 }
 
 /* --- Task Lists --- */
@@ -415,6 +487,28 @@ li.done .task-text {
     transform: translateX(16px);
 }
 
+/* --- Skills --- */
+.skill-text {
+    flex: 1;
+    color: var(--text-dark);
+    font-size: 14px;
+}
+
+li.learned .checkbox {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+li.learned .skill-text {
+    color: var(--text-light);
+}
+
+li.learned .delete-skill {
+    display: none;
+}
+
+
+
 /* --- Tabs --- */
 #tab-bar {
     display: flex;
@@ -449,6 +543,7 @@ li.done .task-text {
 .tab-pane[data-tab="home"] {
     display: block;
 }
+
 
 /* --- Scrollbar --- */
 ::-webkit-scrollbar {

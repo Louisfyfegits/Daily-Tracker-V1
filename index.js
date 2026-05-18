@@ -1,12 +1,16 @@
 // Imports
 import { setDays, setTimer1Interval, setTimer2Interval, currentDate } from "./logic/state.js"
-import { renderDate, renderTasks, renderLargeTasks } from "./ui/render.js"
+import { renderDate, renderTasks, renderLargeTasks, renderGuitarSkills, renderSkatingSkills, renderAssignments } from "./ui/render.js"
 import { listenForDays } from "./data/days.js"
-import { listenForLargeTasks } from "./data/tasks.js"
+import { listenForLargeTasks, listenForGuitarSkills, listenForSkatingSkills, listenForAssignments } from "./data/tasks.js"
 import { listenForTimer, listenForCounter } from "./data/trackers.js"
 import { startTimerInterval } from "./logic/utils.js"
 import { updateDailyCounterDisplay } from "./logic/navigation.js"
 import "./logic/events.js"
+
+
+
+
 
 // --- Counter Element References ---
 const kmDisplay = document.getElementById("km-display")
@@ -48,3 +52,15 @@ listenForCounter("kilometers", (value) => {
 listenForCounter("pushups", (value) => {
     pushupsDisplay.textContent = value
 })
+
+// Listens for guitar skill changes and updates the UI
+listenForGuitarSkills((updatedSkills) => {
+    renderGuitarSkills(updatedSkills)
+})
+
+// Listens for skating skill changes and updates the UI
+listenForSkatingSkills((updatedSkills) => {
+    renderSkatingSkills(updatedSkills)
+})
+
+listenForAssignments((updated) => { renderAssignments(updated) })

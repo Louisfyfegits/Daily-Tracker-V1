@@ -22,10 +22,10 @@ export function getToday() {
 // --- Daily Tasks ---
 
 // Adds a task to a specific day
-export async function addTask(date, task) {
+export async function addTask(date, task, tab = "home") {
     const dayRef = doc(db, "Days", date)
     await setDoc(dayRef, {
-        tasks: { [Date.now()]: { text: task, done: false } }
+        tasks: { [Date.now()]: { text: task, done: false, tab: tab } }
     }, { merge: true })
 }
 

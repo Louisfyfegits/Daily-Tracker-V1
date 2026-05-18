@@ -14,3 +14,5 @@ export function setCurrentDate(date) { currentDate = date }
 export function setCurrentTab(tab) { currentTab = tab }
 export function setTimer1Interval(interval) { timer1Interval = interval }
 export function setTimer2Interval(interval) { timer2Interval = interval }
+export function getCurrentDate() { return currentDate }
+export function getCurrentTab() { return currentTab }

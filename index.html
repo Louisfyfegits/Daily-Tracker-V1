@@ -22,8 +22,9 @@
         <!-- Tab bar (global, always visible) -->
         <div class="section-div" id="tab-bar">
             <button class="tab-btn active" data-tab="home">Home</button>
-            <button class="tab-btn" data-tab="gym">Gym</button>
+            <button class="tab-btn" data-tab="work">Work</button>
             <button class="tab-btn" data-tab="hobbies">Hobbies</button>
+            <button class="tab-btn" data-tab="gym">Gym</button>
         </div>
 
         <!-- Tab content wrapper -->
@@ -91,18 +92,43 @@
                 </div>
             </div>
 
+                        <!-- Work tab -->
+            <div class="tab-pane" data-tab="work">
+                <div class="section-div">
+                    <h2 class="section-title">Study</h2>
+                    <input type="text" id="study-input-el" placeholder="Add a study task...">
+                    <div>
+                        <button id="study-add-btn">ADD</button>
+                    </div>
+                </div>
+                <div class="section-div">
+                    <h2 class="section-title">Assignments</h2>
+                    <input type="text" id="assignments-input-el" placeholder="Add an assignment...">
+                    <div>
+                        <button id="assignments-add-btn">ADD</button>
+                    </div>
+                    <ul id="assignments-ul-el"></ul>
+                </div>
+            </div>
+
                     <!-- Hobbies tab -->
         <div class="tab-pane" data-tab="hobbies">
             <div class="section-div">
-                <h2 class="section-title">Guitar</h2>
+                <div class="section-header">
+                    <h2 class="section-title">Guitar</h2>
+                    <button id="guitar-session-btn" class="session-btn">+ Session</button>
+                </div>
                 <input type="text" id="guitar-input-el" placeholder="Add a song or skill...">
                 <div>
                     <button id="guitar-add-btn">ADD</button>
                 </div>
                 <ul id="guitar-ul-el"></ul>
             </div>
-            <div class="section-div">
-                <h2 class="section-title">Skating</h2>
+                    <div class="section-div">
+                <div class="section-header">
+                    <h2 class="section-title">Skating</h2>
+                   <button id="skating-session-btn" class="session-btn">+ Session</button>
+                </div>
                 <input type="text" id="skating-input-el" placeholder="Add a trick or skill...">
                 <div>
                     <button id="skating-add-btn">ADD</button>
@@ -118,6 +144,8 @@
                 <ul id="warhammer-ul-el"></ul>
             </div>
         </div>
+
+        
 
         <!-- Settings popup -->
         <div id="settings-overlay" class="hidden">
