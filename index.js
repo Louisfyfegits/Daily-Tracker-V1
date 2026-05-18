@@ -18,15 +18,21 @@ const pushupsDisplay = document.getElementById("pushups-display")
 const timer1Display = document.getElementById("timer1-display")
 const timer2Display = document.getElementById("timer2-display")
 
+const loadingOverlay = document.getElementById("loading-overlay")
+
 // --- Firestore Listeners ---
 
 // Listens for day changes and updates the UI
+
 listenForDays((updatedDays) => {
     setDays(updatedDays)
     renderDate(currentDate)
     renderTasks(updatedDays, currentDate)
     updateDailyCounterDisplay(currentDate)
+    loadingOverlay.classList.add("hidden")
 })
+
+
 
 // Listens for large task changes and updates the UI
 listenForLargeTasks((updatedLargeTasks) => {
