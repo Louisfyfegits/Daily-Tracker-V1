@@ -10,13 +10,7 @@ import {
 } from "firebase/firestore"
 
 // Database references
-//home tab
 const largeTasksRef = collection(db, "LargeTasks")
-//need to be generilised in the re build
-const guitarRef = collection(db, "Guitar")
-const skatingRef = collection(db, "Skating")
-
-//work tab
 const assignmentsRef = collection(db, "Assignments")
 
 // --- Large Tasks ---
@@ -44,68 +38,29 @@ export function listenForLargeTasks(callback) {
     })
 }
 
-// --- Guitar Skills ---
+// --- Hobby Skills (Guitar, Skating, Warhammer, Skiing, etc.) ---
 
-// Adds a guitar skill
-export async function addGuitarSkill(skill) {
-    await setDoc(doc(guitarRef, Date.now().toString()), {
-        text: skill,
-        learned: false
-    })
+// Adds a skill to a hobby collection
+export async function addHobbySkill(collectionName, skill) {
+    const ref = collection(db, collectionName)
+    await setDoc(doc(ref, Date.now().toString()), { text: skill, learned: false })
 }
 
-// Removes a guitar skill
-export async function removeGuitarSkill(skillId) {
-    await deleteDoc(doc(db, "Guitar", skillId))
+// Removes a skill from a hobby collection
+export async function removeHobbySkill(collectionName, skillId) {
+    await deleteDoc(doc(db, collectionName, skillId))
 }
 
-// Toggles a guitar skill as learned
-export async function toggleGuitarSkill(skillId, currentLearned) {
-    await updateDoc(doc(db, "Guitar", skillId), {
-        learned: !currentLearned
-    })
+// Toggles a skill's learned state in a hobby collection
+export async function toggleHobbySkill(collectionName, skillId, currentLearned) {
+    await updateDoc(doc(db, collectionName, skillId), { learned: !currentLearned })
 }
 
-// Listens for changes to guitar skills
-export function listenForGuitarSkills(callback) {
-    onSnapshot(guitarRef, (snapshot) => {
+// Listens for changes to a hobby collection
+export function listenForHobbySkills(collectionName, callback) {
+    onSnapshot(collection(db, collectionName), (snapshot) => {
         const skills = {}
-        snapshot.forEach(doc => {
-            skills[doc.id] = doc.data()
-        })
-        callback(skills)
-    })
-}
-
-// --- Skating Skills ---
-
-// Adds a skating skill
-export async function addSkatingSkill(skill) {
-    await setDoc(doc(skatingRef, Date.now().toString()), {
-        text: skill,
-        learned: false
-    })
-}
-
-// Removes a skating skill
-export async function removeSkatingSkill(skillId) {
-    await deleteDoc(doc(db, "Skating", skillId))
-}
-
-// Toggles a skating skill as learned
-export async function toggleSkatingSkill(skillId, currentLearned) {
-    await updateDoc(doc(db, "Skating", skillId), {
-        learned: !currentLearned
-    })
-}
-
-// Listens for changes to skating skills
-export function listenForSkatingSkills(callback) {
-    onSnapshot(skatingRef, (snapshot) => {
-        const skills = {}
-        snapshot.forEach(doc => {
-            skills[doc.id] = doc.data()
-        })
+        snapshot.forEach(doc => { skills[doc.id] = doc.data() })
         callback(skills)
     })
 }
@@ -125,34 +80,5 @@ export function listenForAssignments(callback) {
         const assignments = {}
         snapshot.forEach(doc => { assignments[doc.id] = doc.data().task })
         callback(assignments)
-    })
-}
-
-// --- Habits ---
-
-const habitsRef = collection(db, "Habits")
-
-// Returns the Monday date string for any given date string "DD-MM-YYYY"
-export function getWeekMonday(dateStr) {
-    const [day, month, year] = dateStr.split("-")
-    const d = new Date(year, month - 1, day)
-    const dayOfWeek = d.getDay() // 0=Sun, 1=Mon...
-    const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek // roll back to Monday
-    d.setDate(d.getDate() + diff)
-    return d.toLocaleDateString("en-NZ").replaceAll("/", "-")
-}
-
-// Toggles a single habit cell (e.g. habit="gym", dayKey="Mon")
-export async function toggleHabit(weekMonday, habit, dayKey, currentValue) {
-    const habitDocRef = doc(db, "Habits", weekMonday)
-    await setDoc(habitDocRef, {
-        [habit]: { [dayKey]: !currentValue }
-    }, { merge: true })
-}
-
-// Listens for a specific week's habit document
-export function listenForHabits(weekMonday, callback) {
-    return onSnapshot(doc(db, "Habits", weekMonday), (snapshot) => {
-        callback(snapshot.exists() ? snapshot.data() : {})
     })
 }
