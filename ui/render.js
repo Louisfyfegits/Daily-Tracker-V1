@@ -98,3 +98,71 @@ export function renderAssignments(assignments) {
     }
     list.innerHTML = html
 }
+
+// Renders the weekly habits table for the gym tab
+// habitData = the Firestore document for that week e.g. { gym: { Mon: true }, run: { Wed: true } }
+// currentDate = the date string currently being viewed "DD-MM-YYYY"
+// weekMonday = the Monday key for this week e.g. "16-06-2025"
+export function renderHabits(habitData, currentDate, weekMonday) {
+    const table = document.getElementById("habits-table")
+    if (!table) return
+
+    const HABITS = ["Gym", "Finistride", "Creatine", "2L Water", "Run"]
+    const HABIT_KEYS = ["gym", "finistride", "creatine", "water", "run"]
+    const DAY_KEYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+
+    // Work out which column is "today" and which is the viewed day
+    const today = new Date()
+    const todayStr = today.toLocaleDateString("en-NZ").replaceAll("/", "-")
+
+    // Get day-of-week index for the viewed date (0=Mon..6=Sun)
+    const [d, m, y] = currentDate.split("-")
+    const viewedDate = new Date(y, m - 1, d)
+    const rawDay = viewedDate.getDay() // 0=Sun
+    const viewedDayIndex = rawDay === 0 ? 6 : rawDay - 1 // convert to Mon=0
+
+    // Get today's index too
+    const rawToday = today.getDay()
+    const todayIndex = rawToday === 0 ? 6 : rawToday - 1
+
+    // Is this week in the past (read-only)?
+    const [tm, mm, ym] = weekMonday.split("-")
+    const mondayDate = new Date(ym, mm - 1, tm)
+    const thisMondayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate())
+    // Roll back today to Monday
+    const todayRaw = today.getDay()
+    const rollback = todayRaw === 0 ? -6 : 1 - todayRaw
+    thisMondayDate.setDate(thisMondayDate.getDate() + rollback)
+    const isPastWeek = mondayDate < thisMondayDate
+
+    // Build header row
+    let headerHtml = `<thead><tr><th class="habit-label-col"></th>`
+    DAY_KEYS.forEach((dk, i) => {
+        const isToday = !isPastWeek && i === todayIndex
+        headerHtml += `<th class="habit-day-col${isToday ? " habit-today" : ""}">${dk}</th>`
+    })
+    headerHtml += `</tr></thead>`
+
+    // Build body rows
+    let bodyHtml = `<tbody>`
+    HABITS.forEach((label, hi) => {
+        const key = HABIT_KEYS[hi]
+        const habitRow = habitData[key] || {}
+        bodyHtml += `<tr>`
+        bodyHtml += `<td class="habit-label">${label}</td>`
+        DAY_KEYS.forEach((dk, i) => {
+            const checked = habitRow[dk] === true
+            const isToday = !isPastWeek && i === todayIndex
+            const isViewed = i === viewedDayIndex
+            bodyHtml += `<td class="habit-cell${isToday ? " habit-today" : ""}${isViewed ? " habit-viewed" : ""}"
+                data-habit="${key}" data-day="${dk}" data-week="${weekMonday}" data-checked="${checked}"
+                ${isPastWeek ? "data-readonly='true'" : ""}>
+                ${checked ? `<span class="habit-check">&#10003;</span>` : ""}
+            </td>`
+        })
+        bodyHtml += `</tr>`
+    })
+    bodyHtml += `</tbody>`
+
+    table.innerHTML = headerHtml + bodyHtml
+}

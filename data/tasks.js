@@ -127,3 +127,32 @@ export function listenForAssignments(callback) {
         callback(assignments)
     })
 }
+
+// --- Habits ---
+
+const habitsRef = collection(db, "Habits")
+
+// Returns the Monday date string for any given date string "DD-MM-YYYY"
+export function getWeekMonday(dateStr) {
+    const [day, month, year] = dateStr.split("-")
+    const d = new Date(year, month - 1, day)
+    const dayOfWeek = d.getDay() // 0=Sun, 1=Mon...
+    const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek // roll back to Monday
+    d.setDate(d.getDate() + diff)
+    return d.toLocaleDateString("en-NZ").replaceAll("/", "-")
+}
+
+// Toggles a single habit cell (e.g. habit="gym", dayKey="Mon")
+export async function toggleHabit(weekMonday, habit, dayKey, currentValue) {
+    const habitDocRef = doc(db, "Habits", weekMonday)
+    await setDoc(habitDocRef, {
+        [habit]: { [dayKey]: !currentValue }
+    }, { merge: true })
+}
+
+// Listens for a specific week's habit document
+export function listenForHabits(weekMonday, callback) {
+    return onSnapshot(doc(db, "Habits", weekMonday), (snapshot) => {
+        callback(snapshot.exists() ? snapshot.data() : {})
+    })
+}

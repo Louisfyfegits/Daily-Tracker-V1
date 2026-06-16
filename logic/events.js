@@ -4,9 +4,9 @@ import { navigateDay } from "./navigation.js"
 import { addTask, removeTask, toggleTask, updateDailyCounter } from "../data/days.js"
 import { addLargeTask, removeLargeTask, addGuitarSkill, removeGuitarSkill, 
          toggleGuitarSkill, addSkatingSkill, removeSkatingSkill, toggleSkatingSkill
-        , addAssignment, removeAssignment } from "../data/tasks.js"
+        , addAssignment, removeAssignment, toggleHabit } from "../data/tasks.js"
 import { resetTimer, updateCounter } from "../data/trackers.js"
-import { renderGuitarSkills, renderSkatingSkills,renderAssignments } from "../ui/render.js"
+import { renderGuitarSkills, renderSkatingSkills, renderAssignments } from "../ui/render.js"
 
 
 // --- Daily Task Element References ---
@@ -127,6 +127,15 @@ assignmentsList.addEventListener("click", (e) => {
     const li = e.target.closest("li")
     if (!li) return
     if (e.target.classList.contains("delete-task")) removeAssignment(li.dataset.taskId)
+})
+
+// --- Habits Event Delegation ---
+const habitsTable = document.getElementById("habits-table")
+habitsTable.addEventListener("click", (e) => {
+    const cell = e.target.closest("td.habit-cell")
+    if (!cell || cell.dataset.readonly === "true") return
+    const { habit, day, week, checked } = cell.dataset
+    toggleHabit(week, habit, day, checked === "true")
 })
 
 // --- Guitar Event Listeners ---
