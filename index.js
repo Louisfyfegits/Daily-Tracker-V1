@@ -1,11 +1,11 @@
 // Imports
 import { setDays, setTimer1Interval, setTimer2Interval, currentDate } from "./logic/state.js"
-import { renderDate, renderTasks, renderLargeTasks, renderGuitarSkills, renderSkatingSkills, renderWarhammerSkills, renderSkiingSkills, renderAssignments } from "./ui/render.js"
+import { renderDate, renderTasks, renderLargeTasks, renderGuitarSkills, renderSkatingSkills, renderAssignments, renderHabits } from "./ui/render.js"
 import { listenForDays } from "./data/days.js"
-import { listenForLargeTasks, listenForHobbySkills, listenForAssignments } from "./data/tasks.js"
+import { listenForLargeTasks, listenForGuitarSkills, listenForSkatingSkills, listenForAssignments, listenForHabits, getWeekMonday } from "./data/tasks.js"
 import { listenForTimer, listenForCounter } from "./data/trackers.js"
 import { startTimerInterval } from "./logic/utils.js"
-import { updateDailyCounterDisplay } from "./logic/navigation.js"
+import { updateDailyCounterDisplay, onNavigate } from "./logic/navigation.js"
 import "./logic/events.js"
 
 
@@ -59,9 +59,35 @@ listenForCounter("pushups", (value) => {
     pushupsDisplay.textContent = value
 })
 
-listenForHobbySkills("Guitar", (skills) => { renderGuitarSkills(skills) })
-listenForHobbySkills("Skating", (skills) => { renderSkatingSkills(skills) })
-listenForHobbySkills("Warhammer", (skills) => { renderWarhammerSkills(skills) })
-listenForHobbySkills("Skiing", (skills) => { renderSkiingSkills(skills) })
+// Listens for guitar skill changes and updates the UI
+listenForGuitarSkills((updatedSkills) => {
+    renderGuitarSkills(updatedSkills)
+})
+
+// Listens for skating skill changes and updates the UI
+listenForSkatingSkills((updatedSkills) => {
+    renderSkatingSkills(updatedSkills)
+})
 
 listenForAssignments((updated) => { renderAssignments(updated) })
+
+// --- Habits ---
+// Track the current habits listener so we can unsubscribe when the date changes
+let currentHabitsUnsub = null
+let currentHabitsWeek = null
+
+// Subscribes to the correct week's habit document and renders it for the given date
+function subscribeHabits(date) {
+    const weekMonday = getWeekMonday(date)
+    if (currentHabitsUnsub) currentHabitsUnsub()
+    currentHabitsWeek = weekMonday
+    currentHabitsUnsub = listenForHabits(weekMonday, (data) => {
+        renderHabits(data, date, weekMonday)
+    })
+}
+
+// Wire up initial habits listener for today's week
+subscribeHabits(currentDate)
+
+// Re-subscribe whenever the user navigates to a new date (handles week changes + highlight updates)
+onNavigate((newDate) => subscribeHabits(newDate))

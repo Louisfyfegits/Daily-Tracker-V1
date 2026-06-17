@@ -6,7 +6,7 @@ import { renderDate, renderTasks } from "../ui/render.js"
 const dailyKmDisplay = document.getElementById("daily-km-display")
 const dailyPushupsDisplay = document.getElementById("daily-pushups-display")
 
-// Hook for index.js to register callbacks that fire when the date changes, keeping the dependcy 
+// Hook for index.js to register callbacks that fire when the date changes, keeping the dependcy
 const onNavigateCallbacks = []
 export function onNavigate(fn) { onNavigateCallbacks.push(fn) }
 

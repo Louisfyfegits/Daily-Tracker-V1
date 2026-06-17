@@ -2,9 +2,11 @@
 import { currentDate, currentTab, setCurrentTab, getCurrentDate, getCurrentTab } from "./state.js"
 import { navigateDay } from "./navigation.js"
 import { addTask, removeTask, toggleTask, updateDailyCounter } from "../data/days.js"
-import { addLargeTask, removeLargeTask, addHobbySkill, removeHobbySkill,
-         toggleHobbySkill, addAssignment, removeAssignment } from "../data/tasks.js"
+import { addLargeTask, removeLargeTask, addGuitarSkill, removeGuitarSkill, 
+         toggleGuitarSkill, addSkatingSkill, removeSkatingSkill, toggleSkatingSkill
+        , addAssignment, removeAssignment, toggleHabit } from "../data/tasks.js"
 import { resetTimer, updateCounter } from "../data/trackers.js"
+import { renderGuitarSkills, renderSkatingSkills, renderAssignments } from "../ui/render.js"
 
 
 // --- Daily Task Element References ---
@@ -49,18 +51,6 @@ const skatingInput = document.getElementById("skating-input-el")
 const skatingAddBtn = document.getElementById("skating-add-btn")
 const skatingList = document.getElementById("skating-ul-el")
 const skatingSessionBtn = document.getElementById("skating-session-btn")
-
-// --- Warhammer Element References ---
-const warhammerInput = document.getElementById("warhammer-input-el")
-const warhammerAddBtn = document.getElementById("warhammer-add-btn")
-const warhammerList = document.getElementById("warhammer-ul-el")
-const warhammerSessionBtn = document.getElementById("warhammer-session-btn")
-
-// --- Skiing Element References ---
-const skiingInput = document.getElementById("skiing-input-el")
-const skiingAddBtn = document.getElementById("skiing-add-btn")
-const skiingList = document.getElementById("skiing-ul-el")
-const skiingSessionBtn = document.getElementById("skiing-session-btn")
 
 // --- Work Element References ---
 const studyInput = document.getElementById("study-input-el")
@@ -139,29 +129,59 @@ assignmentsList.addEventListener("click", (e) => {
     if (e.target.classList.contains("delete-task")) removeAssignment(li.dataset.taskId)
 })
 
+// --- Habits Event Delegation ---
+const habitsTable = document.getElementById("habits-table")
+habitsTable.addEventListener("click", (e) => {
+    const cell = e.target.closest("td.habit-cell")
+    if (!cell || cell.dataset.readonly === "true") return
+    const { habit, day, week, checked } = cell.dataset
+    toggleHabit(week, habit, day, checked === "true")
+})
+
 // --- Guitar Event Listeners ---
-guitarAddBtn.addEventListener("click", () => saveHobbySkill("Guitar", guitarInput))
-guitarInput.addEventListener("keydown", (e) => { if (e.key === "Enter") saveHobbySkill("Guitar", guitarInput) })
-guitarSessionBtn.addEventListener("click", () => addTask(getCurrentDate(), "Guitar practice", "hobbies"))
-guitarList.addEventListener("click", (e) => handleHobbyClick(e, "Guitar"))
+
+guitarAddBtn.addEventListener("click", saveGuitarSkill)
+guitarInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") saveGuitarSkill()
+})
+
+guitarSessionBtn.addEventListener("click", () => {
+    addTask(getCurrentDate(), "Guitar practice", "hobbies")
+})
+
+
+guitarList.addEventListener("click", (e) => {
+    const li = e.target.closest("li")
+    if (!li) return
+    const skillId = li.dataset.skillId
+    const learned = li.dataset.learned === "true"
+
+    if (e.target.classList.contains("checkbox")) {
+        toggleGuitarSkill(skillId, learned)
+    } else if (e.target.classList.contains("delete-skill")) {
+        removeGuitarSkill(skillId)
+    }
+})
 
 // --- Skating Event Listeners ---
-skatingAddBtn.addEventListener("click", () => saveHobbySkill("Skating", skatingInput))
-skatingInput.addEventListener("keydown", (e) => { if (e.key === "Enter") saveHobbySkill("Skating", skatingInput) })
-skatingSessionBtn.addEventListener("click", () => addTask(getCurrentDate(), "Skate", "hobbies"))
-skatingList.addEventListener("click", (e) => handleHobbyClick(e, "Skating"))
-
-// --- Warhammer Event Listeners ---
-warhammerAddBtn.addEventListener("click", () => saveHobbySkill("Warhammer", warhammerInput))
-warhammerInput.addEventListener("keydown", (e) => { if (e.key === "Enter") saveHobbySkill("Warhammer", warhammerInput) })
-warhammerSessionBtn.addEventListener("click", () => addTask(getCurrentDate(), "Warhammer", "hobbies"))
-warhammerList.addEventListener("click", (e) => handleHobbyClick(e, "Warhammer"))
-
-// --- Skiing Event Listeners ---
-skiingAddBtn.addEventListener("click", () => saveHobbySkill("Skiing", skiingInput))
-skiingInput.addEventListener("keydown", (e) => { if (e.key === "Enter") saveHobbySkill("Skiing", skiingInput) })
-skiingSessionBtn.addEventListener("click", () => addTask(getCurrentDate(), "Ski", "hobbies"))
-skiingList.addEventListener("click", (e) => handleHobbyClick(e, "Skiing"))
+skatingAddBtn.addEventListener("click", saveSkatingSkill)
+skatingInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") saveSkatingSkill()
+})
+skatingSessionBtn.addEventListener("click", () => {
+    addTask(currentDate, "Skate", "hobbies")
+})
+skatingList.addEventListener("click", (e) => {
+    const li = e.target.closest("li")
+    if (!li) return
+    const skillId = li.dataset.skillId
+    const learned = li.dataset.learned === "true"
+    if (e.target.classList.contains("checkbox")) {
+        toggleSkatingSkill(skillId, learned)
+    } else if (e.target.classList.contains("delete-skill")) {
+        removeSkatingSkill(skillId)
+    }
+})
 
 // --- Swipe Event Listeners ---
 let touchStartX = null
@@ -221,25 +241,20 @@ async function saveLargeTask() {
     largeTaskInput.value = ""
 }
 
-// Saves a new skill to a hobby collection and clears the input
-async function saveHobbySkill(collectionName, inputEl) {
-    const skill = inputEl.value.trim()
+// Saves a new guitar skill after cleaning
+async function saveGuitarSkill() {
+    const skill = guitarInput.value.trim()
     if (skill === "") return
-    await addHobbySkill(collectionName, skill)
-    inputEl.value = ""
+    await addGuitarSkill(skill)
+    guitarInput.value = ""
 }
 
-// Handles checkbox toggle and delete clicks on a hobby skill list
-function handleHobbyClick(e, collectionName) {
-    const li = e.target.closest("li")
-    if (!li) return
-    const skillId = li.dataset.skillId
-    const learned = li.dataset.learned === "true"
-    if (e.target.classList.contains("checkbox")) {
-        toggleHobbySkill(collectionName, skillId, learned)
-    } else if (e.target.classList.contains("delete-skill")) {
-        removeHobbySkill(collectionName, skillId)
-    }
+// Saves a new skating skill
+async function saveSkatingSkill() {
+    const skill = skatingInput.value.trim()
+    if (skill === "") return
+    await addSkatingSkill(skill)
+    skatingInput.value = ""
 }
 
 async function saveStudyTask() {
