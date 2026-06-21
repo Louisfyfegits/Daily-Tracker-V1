@@ -21,7 +21,40 @@ export function renderDate(date) {
     `
 }
 
-// Renders the list of daily tasks for the current day and there colors
+// Renders the list of timers (id -> label) into the Tracker section.
+// Each row carries data-timer-id for reset/delete delegation and an id'd
+// display element ("timer-display-<id>") for the countup interval to target.
+export function renderTimers(timerDefs) {
+    const container = document.getElementById("timers-container")
+    if (!container) return
+
+    let html = ""
+    for (const [timerId, label] of Object.entries(timerDefs)) {
+       html += `
+<div class="timer" data-timer-id="${timerId}">
+    <p class="timer-label">${label}: </p>
+
+    <p class="timer-display"
+       id="timer-display-${timerId}">
+       0 Days 0 Hours 0 Minutes 0 Seconds
+    </p>
+
+    <button class="reset-btn"
+            data-timer-action="reset">
+            RESET
+    </button>
+
+    <span class="delete-timer"
+          data-timer-action="delete">
+          &#10005;
+    </span>
+
+</div>`
+    }
+    container.innerHTML = html
+}
+
+
 export function renderTasks(days, currentDate) {
     const taskList = document.getElementById("ul-el")
     const day = days[currentDate]
@@ -39,57 +72,11 @@ export function renderTasks(days, currentDate) {
     taskList.innerHTML = html
 }
 
-// Renders the list of large tasks
-export function renderLargeTasks(largeTasks) {
-    const largeTaskList = document.getElementById("large-ul-el")
-
+// Renders a plain text list (large tasks, assignments) into the given <ul> element
+function renderTaskList(items, listElId) {
+    const list = document.getElementById(listElId)
     let html = ""
-    for (const [taskId, task] of Object.entries(largeTasks)) {
-        html += `
-        <li data-task-id="${taskId}">
-            <span class="task-text">${task}</span>
-            <span class="delete-task">&#10005;</span>
-        </li>`
-    }
-    largeTaskList.innerHTML = html
-}
-
-// Renders the list of guitar skills
-export function renderGuitarSkills(skills) {
-    const guitarList = document.getElementById("guitar-ul-el")
-
-    let html = ""
-    for (const [skillId, skill] of Object.entries(skills)) {
-        html += `
-        <li data-skill-id="${skillId}" data-learned="${skill.learned}" class="${skill.learned ? "learned" : ""}">
-            <span class="checkbox">${skill.learned ? "&#10003;" : ""}</span>
-            <span class="skill-text">${skill.text}</span>
-            <span class="delete-skill">&#10005;</span>
-        </li>`
-    }
-    guitarList.innerHTML = html
-}
-
-// Renders the list of skating skills
-export function renderSkatingSkills(skills) {
-    const skatingList = document.getElementById("skating-ul-el")
-
-    let html = ""
-    for (const [skillId, skill] of Object.entries(skills)) {
-        html += `
-        <li data-skill-id="${skillId}" data-learned="${skill.learned}" class="${skill.learned ? "learned" : ""}">
-            <span class="checkbox">${skill.learned ? "&#10003;" : ""}</span>
-            <span class="skill-text">${skill.text}</span>
-            <span class="delete-skill">&#10005;</span>
-        </li>`
-    }
-    skatingList.innerHTML = html
-}
-
-export function renderAssignments(assignments) {
-    const list = document.getElementById("assignments-ul-el")
-    let html = ""
-    for (const [id, task] of Object.entries(assignments)) {
+    for (const [id, task] of Object.entries(items)) {
         html += `
         <li data-task-id="${id}">
             <span class="task-text">${task}</span>
@@ -97,6 +84,46 @@ export function renderAssignments(assignments) {
         </li>`
     }
     list.innerHTML = html
+}
+
+// Renders a skill list with a learned toggle (guitar, skating, warhammer) into the given <ul> element
+function renderSkillList(skills, listElId) {
+    const list = document.getElementById(listElId)
+    let html = ""
+    for (const [skillId, skill] of Object.entries(skills)) {
+        html += `
+        <li data-skill-id="${skillId}" data-learned="${skill.learned}" class="${skill.learned ? "learned" : ""}">
+            <span class="checkbox">${skill.learned ? "&#10003;" : ""}</span>
+            <span class="skill-text">${skill.text}</span>
+            <span class="delete-skill">&#10005;</span>
+        </li>`
+    }
+    list.innerHTML = html
+}
+
+// Renders the list of large tasks
+export function renderLargeTasks(largeTasks) {
+    renderTaskList(largeTasks, "large-ul-el")
+}
+
+// Renders the list of assignments
+export function renderAssignments(assignments) {
+    renderTaskList(assignments, "assignments-ul-el")
+}
+
+// Renders the list of guitar skills
+export function renderGuitarSkills(skills) {
+    renderSkillList(skills, "guitar-ul-el")
+}
+
+// Renders the list of skating skills
+export function renderSkatingSkills(skills) {
+    renderSkillList(skills, "skating-ul-el")
+}
+
+// Renders the list of warhammer skills
+export function renderWarhammerSkills(skills) {
+    renderSkillList(skills, "warhammer-ul-el")
 }
 
 // Renders the weekly habits table for the gym tab

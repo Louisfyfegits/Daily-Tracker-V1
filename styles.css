@@ -1,12 +1,12 @@
 /* --- Global Variables --- */
 :root {
     /* Main Theme */
-    --primary-color: rgb(60, 80, 160);
-    --primary-hover: rgb(90, 120, 190);
+    --primary-color: rgb(0, 15, 77);
+    --primary-hover: rgb(24, 37, 132);
 
     /* Light Theme Colors */
-    --secondary-color: rgb(240, 243, 250);
-    --border-light: rgb(210, 220, 240);
+    --secondary-color: rgb(255, 255, 255);
+    --border-light: rgb(231, 238, 252);
 
     /* Neutral Colors */
     --white: #fff;
@@ -18,127 +18,8 @@
     /* Danger */
     --danger-color: red;
     --danger-bg: #fee;
-
-   /* Tab Colors */
-    --gym-color: rgb(0, 180, 180);
-    --gym-bg: rgba(0, 180, 180, 0.393);
-    --hobbies-color: rgb(140, 60, 200);
-    --hobbies-bg: rgba(117, 20, 192, 0.221);
-    --work-color: rgb(97, 97, 98);
-    --work-bg: rgba(1, 1, 1, 0.163);
 }
 
-/* --- Tab Colors --- */
-li[data-tab="gym"] {
-    border: 1px solid var(--gym-color);
-    background-color: var(--gym-bg);
-    border-radius: 6px;
-    padding: 4px 6px;
-}
-
-li[data-tab="hobbies"] {
-    border: 1px solid var(--hobbies-color);
-    background-color: var(--hobbies-bg);
-    border-radius: 6px;
-    padding: 4px 6px;
-}
-
-li[data-tab="work"] {
-    border: 1px solid var(--work-color);
-    background-color: var(--work-bg);
-    border-radius: 6px;
-    padding: 4px 6px;
-}
-
-li[data-tab="gym"] .checkbox,
-li[data-tab="gym"] .task-text,
-li[data-tab="gym"] .delete-task {
-    color: var(--gym-color);
-    border-color: var(--gym-color);
-}
-
-li[data-tab="hobbies"] .checkbox,
-li[data-tab="hobbies"] .task-text,
-li[data-tab="hobbies"] .delete-task {
-    color: var(--hobbies-color);
-    border-color: var(--hobbies-color);
-}
-
-li[data-tab="work"] .checkbox,
-li[data-tab="work"] .task-text,
-li[data-tab="work"] .delete-task {
-    color: var(--work-color);
-    border-color: var(--work-color);
-}
-
-li .delete-task:hover {
-    color: var(--danger-color);
-    background-color: var(--danger-bg);
-}
-
-.tab-pane[data-tab="gym"] .section-div {
-    border-color: var(--gym-color);
-}
-
-.tab-pane[data-tab="hobbies"] .section-div {
-    border-color: var(--hobbies-color);
-}
-
-.tab-pane[data-tab="work"] .section-div {
-    border-color: var(--work-color);
-}
-
-.tab-pane[data-tab="gym"] .section-div {
-    border-color: var(--gym-color);
-    background-color: var(--gym-bg);
-}
-
-.tab-pane[data-tab="hobbies"] .section-div {
-    border-color: var(--hobbies-color);
-    background-color: var(--hobbies-bg);
-}
-
-.tab-pane[data-tab="work"] .section-div {
-    border-color: var(--work-color);
-    background-color: var(--work-bg);
-}
-
-
-.tab-pane[data-tab="gym"] .section-div button,
-.tab-pane[data-tab="gym"] .section-div h2,
-.tab-pane[data-tab="gym"] .section-div input {
-    border-color: var(--gym-color);
-    color: var(--gym-color);
-}
-
-.tab-pane[data-tab="gym"] .section-div button {
-    background-color: var(--gym-color);
-    color: var(--white);
-}
-
-.tab-pane[data-tab="hobbies"] .section-div button,
-.tab-pane[data-tab="hobbies"] .section-div h2,
-.tab-pane[data-tab="hobbies"] .section-div input {
-    border-color: var(--hobbies-color);
-    color: var(--hobbies-color);
-}
-
-.tab-pane[data-tab="hobbies"] .section-div button {
-    background-color: var(--hobbies-color);
-    color: var(--white);
-}
-
-.tab-pane[data-tab="work"] .section-div button,
-.tab-pane[data-tab="work"] .section-div h2,
-.tab-pane[data-tab="work"] .section-div input {
-    border-color: var(--work-color);
-    color: var(--work-color);
-}
-
-.tab-pane[data-tab="work"] .section-div button {
-    background-color: var(--work-color);
-    color: var(--white);
-}
 /* --- Base --- */
 body {
     margin: 0;
@@ -159,7 +40,6 @@ body {
     background-color: var(--secondary-color);
     position: relative;
 }
-
 .section-header {
     display: flex;
     align-items: center;
@@ -176,7 +56,7 @@ body {
     text-align: center;
 }
 
-#settings-btn {
+#settings-btn, #add-timer-btn, #edit-timers-btn {
     background: none;
     border: none;
     font-size: 14px;
@@ -184,10 +64,21 @@ body {
     cursor: pointer;
     padding: 0;
     position: absolute;
+}
+
+
+#edit-timers-btn {
+    left: 0;
+}
+
+#add-timer-btn {
     right: 0;
 }
 
-#settings-btn:hover {
+#settings-btn {
+    right: 0;
+}
+#settings-btn:hover, #add-timer-btn:hover, #edit-timers-btn:hover {
     color: var(--primary-hover);
 }
 
@@ -259,7 +150,7 @@ button:hover {
     border-radius: 6px;
 }
 
-#btn-row, #large-btn-row {
+#btn-row, #large-btn-row, #add-timer-row {
     display: flex;
     gap: 8px;
     margin-top: 5px;
@@ -281,6 +172,8 @@ button:hover {
     background-color: var(--primary-color);
     color: var(--white);
 }
+
+.reset-btn
 
 /* --- Task Lists --- */
 ul {
@@ -329,7 +222,7 @@ li.done .task-text {
     color: var(--text-light);
 }
 
-.delete-task {
+.delete-task, .delete-timer {
     color: var(--text-muted);
     cursor: pointer;
     font-size: 12px;
@@ -337,7 +230,15 @@ li.done .task-text {
     border-radius: 4px;
 }
 
-.delete-task:hover {
+/* --- Edit Mode  for timers--- */
+.delete-timer {
+    display: none;
+}
+
+#timers-container.editing .delete-timer {
+    display: inline;
+}
+.delete-task:hover, .delete-timer:hover {
     color: var(--danger-color);
     background-color: var(--danger-bg);
 }
@@ -349,6 +250,11 @@ li.done .task-text {
     gap: 8px;
     padding: 6px 0;
     border-bottom: 1px solid var(--border-light);
+}
+
+.header-buttons {
+    display: flex;
+    gap: 8px;
 }
 
 .timer:last-child {
@@ -375,6 +281,11 @@ li.done .task-text {
     font-size: 10px;
     border-radius: 6px;
     white-space: nowrap;
+    display:none;
+}
+
+#timers-container.editing .reset-btn {
+    display: inline;
 }
 
 /* --- Daily Counters --- */
@@ -425,11 +336,11 @@ li.done .task-text {
 }
 
 /* --- Settings Popup --- */
-#settings-overlay.hidden {
+#settings-overlay.hidden, #add-timer-overlay.hidden {
     display: none;
 }
 
-#settings-overlay {
+#settings-overlay, #add-timer-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -442,7 +353,7 @@ li.done .task-text {
     z-index: 1000;
 }
 
-#settings-popup {
+#settings-popup, #add-timer-popup {
     background-color: var(--white);
     border: 2px solid var(--primary-color);
     border-radius: 12px;
@@ -452,7 +363,7 @@ li.done .task-text {
     position: relative;
 }
 
-#settings-close {
+#settings-close, #add-timer-close {
     background: none;
     border: none;
     font-size: 14px;
@@ -571,8 +482,6 @@ li.learned .delete-skill {
     display: none;
 }
 
-
-
 /* --- Tabs --- */
 #tab-bar {
     display: flex;
@@ -607,7 +516,6 @@ li.learned .delete-skill {
 .tab-pane[data-tab="home"] {
     display: block;
 }
-
 
 /* --- Scrollbar --- */
 ::-webkit-scrollbar {
@@ -677,17 +585,16 @@ li.learned .delete-skill {
     padding: 4px 2px;
 }
 
-
 .habit-day-col {
-    color: var(--gym-color);
+    color: var(--primary-color);
     font-weight: 700;
     font-size: 10px;
-    border-bottom: 1px solid var(--gym-color);
+    border-bottom: 1px solid var(--primary-color);
 }
 
 .habit-label {
     text-align: left;
-    color: var(--gym-color);
+    color: var(--primary-color);
     font-weight: 800;
     font-size: 9px;
     padding-right: 0px;
@@ -697,7 +604,7 @@ li.learned .delete-skill {
 
 .habit-cell {
     cursor: pointer;
-    border: 1px solid rgba(0, 180, 180, 0.3);
+    border: 1px solid rgba(0, 15, 77, 0.3);
     border-radius: 4px;
     min-width: 24px;
     height: 22px;
@@ -705,7 +612,7 @@ li.learned .delete-skill {
 }
 
 .habit-cell:hover {
-    background-color: rgba(0, 180, 180, 0.2);
+    background-color: rgba(0, 15, 77, 0.2);
 }
 
 .habit-cell[data-readonly="true"] {
@@ -713,21 +620,21 @@ li.learned .delete-skill {
 }
 
 .habit-cell.habit-today {
-    border-color: var(--gym-color);
-    background-color: rgba(0, 180, 180, 0.12);
+    border-color: var(--primary-color);
+    background-color: rgba(0, 15, 77, 0.12);
 }
 
 .habit-day-col.habit-today {
-    border-bottom: 2px solid var(--gym-color);
+    border-bottom: 2px solid var(--primary-color);
 }
 
 .habit-cell.habit-viewed {
-    outline: 2px solid var(--gym-color);
+    outline: 2px solid var(--primary-color);
     outline-offset: -2px;
 }
 
 .habit-check {
-    color: var(--gym-color);
+    color: var(--primary-color);
     font-size: 13px;
     font-weight: 900;
     line-height: 1;

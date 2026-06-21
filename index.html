@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 <div class="section-div">
-                    <h2 class="section-title">Large Tasks</h2>
+                    <h2 class="section-title">Other Tasks</h2>
                     <input type="text" id="large-input-el" placeholder="Add a large task...">
                     <div id="large-btn-row">
                         <button id="large-add-btn">ADD</button>
@@ -47,17 +47,15 @@
                     <ul id="large-ul-el"></ul>
                 </div>
                 <div class="section-div">
-                    <h2 class="section-title">Tracker</h2>
-                    <div class="timer">
-                        <p class="timer-label">Free: </p>
-                        <p class="timer-display" id="timer1-display">0 Days 0 Hours 0 Minutes 0 Seconds</p>
-                        <button class="reset-btn" id="timer1-reset">RESET</button>
+                    <div class="section-header">
+                        <h2 class="section-title">Tracker</h2>
+
+                        <div class="header-buttons">
+                            <button id="edit-timers-btn">&#128394</button>
+                            <button id="add-timer-btn">+</button>
+                        </div>
                     </div>
-                    <div class="timer">
-                        <p class="timer-label">Sugar Free (Mum's Rules): </p>
-                        <p class="timer-display" id="timer2-display">0 Days 0 Hours 0 Minutes 0 Seconds</p>
-                        <button class="reset-btn" id="timer2-reset">RESET</button>
-                    </div>
+                    <div id="timers-container"></div>
                 </div>
             </div>
 
@@ -120,7 +118,7 @@
             <div class="section-div">
                 <div class="section-header">
                     <h2 class="section-title">Guitar</h2>
-                    <button id="guitar-session-btn" class="session-btn">+ Session</button>
+                    <button class="session-btn" data-session-task="Guitar practice">+ Session</button>
                 </div>
                 <input type="text" id="guitar-input-el" placeholder="Add a song or skill...">
                 <div>
@@ -131,7 +129,7 @@
                     <div class="section-div">
                 <div class="section-header">
                     <h2 class="section-title">Skating</h2>
-                   <button id="skating-session-btn" class="session-btn">+ Session</button>
+                   <button class="session-btn" data-session-task="Skate">+ Session</button>
                 </div>
                 <input type="text" id="skating-input-el" placeholder="Add a trick or skill...">
                 <div>
@@ -140,7 +138,10 @@
                 <ul id="skating-ul-el"></ul>
             </div>
             <div class="section-div">
-                <h2 class="section-title">Warhammer</h2>
+                <div class="section-header">
+                    <h2 class="section-title">Warhammer</h2>
+                    <button class="session-btn" data-session-task="Warhammer session">+ Session</button>
+                </div>
                 <input type="text" id="warhammer-input-el" placeholder="Add a task...">
                 <div>
                     <button id="warhammer-add-btn">ADD</button>
@@ -165,6 +166,18 @@
                         <span class="toggle-slider"></span>
                     </label>
                 </div>
+            </div>
+        </div>
+
+        <!-- Add Timer popup -->
+        <div id="add-timer-overlay" class="hidden">
+            <div id="add-timer-popup">
+                <div class="section-header">
+                    <h2 class="section-title">New Timer</h2>
+                    <button id="add-timer-close">&#10005;</button>
+                </div>
+                <input type="text" id="timer-name-input" placeholder="Timer name...">
+                <button id="add-timer-confirm">ADD</button>
             </div>
         </div>
        

@@ -21,7 +21,7 @@ export function getToday() {
 
 // --- Daily Tasks ---
 
-// Adds a task to a specific day
+// Adds a task to a specific day           //default to home  
 export async function addTask(date, task, tab = "home") {
     const dayRef = doc(db, "Days", date)
     await setDoc(dayRef, {

@@ -1,12 +1,13 @@
 // Imports
-import { currentDate, currentTab, setCurrentTab, getCurrentDate, getCurrentTab } from "./state.js"
+import { currentDate, currentTab, setCurrentTab, getCurrentDate, getEditing, setEditing } from "./state.js"
 import { navigateDay } from "./navigation.js"
 import { addTask, removeTask, toggleTask, updateDailyCounter } from "../data/days.js"
-import { addLargeTask, removeLargeTask, addGuitarSkill, removeGuitarSkill, 
-         toggleGuitarSkill, addSkatingSkill, removeSkatingSkill, toggleSkatingSkill
-        , addAssignment, removeAssignment, toggleHabit } from "../data/tasks.js"
-import { resetTimer, updateCounter } from "../data/trackers.js"
-import { renderGuitarSkills, renderSkatingSkills, renderAssignments } from "../ui/render.js"
+import { addLargeTask, removeLargeTask,
+         addGuitarSkill, removeGuitarSkill, toggleGuitarSkill,
+         addSkatingSkill, removeSkatingSkill, toggleSkatingSkill,
+         addWarhammerSkill, removeWarhammerSkill, toggleWarhammerSkill,
+         addAssignment, removeAssignment, toggleHabit } from "../data/tasks.js"
+import { addTimer, removeTimer, resetTimer, updateCounter } from "../data/trackers.js"
 
 
 // --- Daily Task Element References ---
@@ -16,14 +17,24 @@ const taskList = document.getElementById("ul-el")
 const prevButton = document.getElementById("prev-btn")
 const nextButton = document.getElementById("next-btn")
 
+// --- Gym Element References ---
+const gymInput = document.getElementById("gym-input-el")
+const gymAddBtn = document.getElementById("gym-add-btn")
+
 // --- Large Task Element References ---
 const largeAddButton = document.getElementById("large-add-btn")
 const largeTaskInput = document.getElementById("large-input-el")
 const largeTaskList = document.getElementById("large-ul-el")
 
 // --- Timer Element References ---
-const timer1ResetBtn = document.getElementById("timer1-reset")
-const timer2ResetBtn = document.getElementById("timer2-reset")
+const timersContainer = document.getElementById("timers-container")
+const addTimerBtn = document.getElementById("add-timer-btn")
+const addTimerOverlay = document.getElementById("add-timer-overlay")
+const addTimerClose = document.getElementById("add-timer-close")
+const addTimerConfirm = document.getElementById("add-timer-confirm")
+const timerNameInput = document.getElementById("timer-name-input")
+// --- Edit Timers Element References ---
+const editTimersBtn = document.getElementById("edit-timers-btn")
 
 // --- Counter Element References ---
 const dailyKmMinus = document.getElementById("daily-km-minus")
@@ -40,18 +51,6 @@ const settingsClose = document.getElementById("settings-close")
 const tabButtons = document.querySelectorAll(".tab-btn")
 const tabPanes = document.querySelectorAll(".tab-pane")
 
-// --- Guitar Element References ---
-const guitarInput = document.getElementById("guitar-input-el")
-const guitarAddBtn = document.getElementById("guitar-add-btn")
-const guitarList = document.getElementById("guitar-ul-el")
-const guitarSessionBtn = document.getElementById("guitar-session-btn")
-
-// --- Skating Element References ---
-const skatingInput = document.getElementById("skating-input-el")
-const skatingAddBtn = document.getElementById("skating-add-btn")
-const skatingList = document.getElementById("skating-ul-el")
-const skatingSessionBtn = document.getElementById("skating-session-btn")
-
 // --- Work Element References ---
 const studyInput = document.getElementById("study-input-el")
 const studyAddBtn = document.getElementById("study-add-btn")
@@ -60,22 +59,48 @@ const assignmentsAddBtn = document.getElementById("assignments-add-btn")
 const assignmentsList = document.getElementById("assignments-ul-el")
 
 // --- Daily Task Event Listeners ---
-addButton.addEventListener("click", saveTask)
 prevButton.addEventListener("click", () => navigateDay(-1))
 nextButton.addEventListener("click", () => navigateDay(1))
-taskInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") saveTask()
-})
-
-// --- Large Task Event Listeners ---
-largeAddButton.addEventListener("click", saveLargeTask)
-largeTaskInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") saveLargeTask()
-})
 
 // --- Timer Event Listeners ---
-timer1ResetBtn.addEventListener("click", () => resetTimer("timer1"))
-timer2ResetBtn.addEventListener("click", () => resetTimer("timer2"))
+// Delegated so any number of timers (added/removed at runtime) work without rewiring.
+timersContainer.addEventListener("click", (e) => {
+    const row = e.target.closest(".timer")
+    if (!row) return
+    const timerId = row.dataset.timerId
+    const action = e.target.dataset.timerAction
+    if (action === "reset") {
+        resetTimer(timerId)
+    } else if (action === "delete") {
+        removeTimer(timerId)
+    }
+})
+
+// --- Add Timer Popup ---
+addTimerBtn.addEventListener("click", () => {
+    addTimerOverlay.classList.remove("hidden")
+    timerNameInput.focus()
+})
+addTimerClose.addEventListener("click", () => addTimerOverlay.classList.add("hidden"))
+
+async function saveNewTimer() {
+    const name = timerNameInput.value.trim()
+    if (name === "") return
+    await addTimer(name)
+    timerNameInput.value = ""
+    addTimerOverlay.classList.add("hidden")
+}
+addTimerConfirm.addEventListener("click", saveNewTimer)
+timerNameInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") saveNewTimer()
+})
+
+// --- Edit Timers Toggle ---
+editTimersBtn.addEventListener("click", () => {
+    const editing = !getEditing()
+    setEditing(editing)
+    timersContainer.classList.toggle("editing", editing)
+})
 
 // --- Counter Event Listeners ---
 dailyKmPlus.addEventListener("click", () => {
@@ -113,16 +138,6 @@ tabButtons.forEach(btn => {
 })
 
 // --- Work Event Listeners ---
-studyAddBtn.addEventListener("click", saveStudyTask)
-studyInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") saveStudyTask()
-})
-
-assignmentsAddBtn.addEventListener("click", saveAssignment)
-assignmentsInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") saveAssignment()
-})
-
 assignmentsList.addEventListener("click", (e) => {
     const li = e.target.closest("li")
     if (!li) return
@@ -138,49 +153,76 @@ habitsTable.addEventListener("click", (e) => {
     toggleHabit(week, habit, day, checked === "true")
 })
 
-// --- Guitar Event Listeners ---
+// --- Skill Section Wiring (generic) ---
+// Wires up an "input + add button + list" section backed by a skills API
+// (add/remove/toggle 'learned' state). Used for Guitar, Skating, Warhammer.
+function wireSkillSection({ inputId, addBtnId, listId, addFn, removeFn, toggleFn }) {
+    const input = document.getElementById(inputId)
+    const addBtn = document.getElementById(addBtnId)
+    const list = document.getElementById(listId)
 
-guitarAddBtn.addEventListener("click", saveGuitarSkill)
-guitarInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") saveGuitarSkill()
-})
-
-guitarSessionBtn.addEventListener("click", () => {
-    addTask(getCurrentDate(), "Guitar practice", "hobbies")
-})
-
-
-guitarList.addEventListener("click", (e) => {
-    const li = e.target.closest("li")
-    if (!li) return
-    const skillId = li.dataset.skillId
-    const learned = li.dataset.learned === "true"
-
-    if (e.target.classList.contains("checkbox")) {
-        toggleGuitarSkill(skillId, learned)
-    } else if (e.target.classList.contains("delete-skill")) {
-        removeGuitarSkill(skillId)
+    async function save() {
+        const skill = input.value.trim()
+        if (skill === "") return
+        await addFn(skill)
+        input.value = ""
     }
+
+    addBtn.addEventListener("click", save)
+    input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") save()
+    })
+
+    list.addEventListener("click", (e) => {
+        const li = e.target.closest("li")
+        if (!li) return
+        const skillId = li.dataset.skillId
+        const learned = li.dataset.learned === "true"
+        if (e.target.classList.contains("checkbox")) {
+            toggleFn(skillId, learned)
+        } else if (e.target.classList.contains("delete-skill")) {
+            removeFn(skillId)
+        }
+    })
+}
+
+// --- Guitar ---
+wireSkillSection({
+    inputId: "guitar-input-el",
+    addBtnId: "guitar-add-btn",
+    listId: "guitar-ul-el",
+    addFn: addGuitarSkill,
+    removeFn: removeGuitarSkill,
+    toggleFn: toggleGuitarSkill
 })
 
-// --- Skating Event Listeners ---
-skatingAddBtn.addEventListener("click", saveSkatingSkill)
-skatingInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") saveSkatingSkill()
+// --- Skating ---
+wireSkillSection({
+    inputId: "skating-input-el",
+    addBtnId: "skating-add-btn",
+    listId: "skating-ul-el",
+    addFn: addSkatingSkill,
+    removeFn: removeSkatingSkill,
+    toggleFn: toggleSkatingSkill
 })
-skatingSessionBtn.addEventListener("click", () => {
-    addTask(currentDate, "Skate", "hobbies")
+
+// --- Warhammer ---
+wireSkillSection({
+    inputId: "warhammer-input-el",
+    addBtnId: "warhammer-add-btn",
+    listId: "warhammer-ul-el",
+    addFn: addWarhammerSkill,
+    removeFn: removeWarhammerSkill,
+    toggleFn: toggleWarhammerSkill
 })
-skatingList.addEventListener("click", (e) => {
-    const li = e.target.closest("li")
-    if (!li) return
-    const skillId = li.dataset.skillId
-    const learned = li.dataset.learned === "true"
-    if (e.target.classList.contains("checkbox")) {
-        toggleSkatingSkill(skillId, learned)
-    } else if (e.target.classList.contains("delete-skill")) {
-        removeSkatingSkill(skillId)
-    }
+
+// --- Session Button Event Listener (delegated) ---
+// Any button with class "session-btn" + a data-session-task attribute works automatically.
+// To add a new one, just add the button in HTML — no JS changes needed.
+// (Session buttons always log to the "hobbies" tab regardless of which section they're in.)
+document.addEventListener("click", (e) => {
+    if (!e.target.classList.contains("session-btn")) return
+    addTask(getCurrentDate(), e.target.dataset.sessionTask, "hobbies")
 })
 
 // --- Swipe Event Listeners ---
@@ -193,7 +235,7 @@ document.addEventListener("touchstart", (e) => {
 document.addEventListener("touchend", (e) => {
     if (touchStartX === null) return
     const diff = touchStartX - e.changedTouches[0].clientX
-    if (Math.abs(diff) < 35) return
+    if (Math.abs(diff) < 100) return
     if (diff > 0) navigateDay(1)
     else navigateDay(-1)
     touchStartX = null
@@ -225,48 +267,25 @@ largeTaskList.addEventListener("click", (e) => {
 
 // --- Helper Functions ---
 
-// Saves a new daily task to the current day after cleaning the input
-async function saveTask() {
-    const task = taskInput.value.trim()
-    if (task === "") return
-    await addTask(currentDate, task, currentTab)
-    taskInput.value = ""
+// Wires an input + add button pair to a save callback: trims the input,
+// bails on empty, calls saveFn(text), then clears the input.
+// Covers both single-arg saves (addLargeTask(text)) and multi-arg saves
+// (addTask(date, text, tab)) since saveFn can close over whatever it needs.
+function wireTaskInput(input, addBtn, saveFn) {
+    async function save() {
+        const text = input.value.trim()
+        if (text === "") return
+        await saveFn(text)
+        input.value = ""
+    }
+    addBtn.addEventListener("click", save)
+    input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") save()
+    })
 }
 
-// Saves a new large task after cleaning it 
-async function saveLargeTask() {
-    const task = largeTaskInput.value.trim()
-    if (task === "") return
-    await addLargeTask(task)
-    largeTaskInput.value = ""
-}
-
-// Saves a new guitar skill after cleaning
-async function saveGuitarSkill() {
-    const skill = guitarInput.value.trim()
-    if (skill === "") return
-    await addGuitarSkill(skill)
-    guitarInput.value = ""
-}
-
-// Saves a new skating skill
-async function saveSkatingSkill() {
-    const skill = skatingInput.value.trim()
-    if (skill === "") return
-    await addSkatingSkill(skill)
-    skatingInput.value = ""
-}
-
-async function saveStudyTask() {
-    const task = studyInput.value.trim()
-    if (task === "") return
-    await addTask(getCurrentDate(), task, "work")
-    studyInput.value = ""
-}
-
-async function saveAssignment() {
-    const task = assignmentsInput.value.trim()
-    if (task === "") return
-    await addAssignment(task)
-    assignmentsInput.value = ""
-}
+wireTaskInput(taskInput, addButton, (text) => addTask(currentDate, text, currentTab))
+wireTaskInput(studyInput, studyAddBtn, (text) => addTask(getCurrentDate(), text, "work"))
+wireTaskInput(gymInput, gymAddBtn, (text) => addTask(getCurrentDate(), text, "gym"))
+wireTaskInput(largeTaskInput, largeAddButton, addLargeTask)
+wireTaskInput(assignmentsInput, assignmentsAddBtn, addAssignment)
