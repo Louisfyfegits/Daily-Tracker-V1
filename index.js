@@ -108,6 +108,16 @@ listenForWarhammerSkills((updatedSkills) => {
 
 listenForAssignments((updated) => { renderAssignments(updated) })
 
+//darkmode
+document.getElementById('dark-mode-toggle').addEventListener('change', function() {
+    console.log('Dark mode toggle changed:', this.checked)
+    if (this.checked) {
+        document.documentElement.classList.add('dark')
+    } else {
+        document.documentElement.classList.remove('dark')
+    }
+})
+
 // --- Habits ---
 // Track the current habits listener so we can unsubscribe when the date changes
 let currentHabitsUnsub = null

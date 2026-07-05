@@ -20,6 +20,27 @@
     --danger-bg: #fee;
 }
 
+:root.dark {
+    /* Main Theme */
+    --primary-color: rgb(0, 15, 77);
+    --primary-hover: rgb(24, 37, 132);
+
+    /* Dark Theme Colors */
+    --secondary-color: rgb(30, 30, 30);
+    --border-light: rgb(50, 50, 50);
+
+    /* Neutral Colors */
+    --white: #fff;
+    --black: #000;
+    --text-dark: #eee;
+    --text-light: #555;
+    --text-muted: #444;
+
+    /* Danger */
+    --danger-color: red;
+    --danger-bg: #fee;
+}
+
 /* --- Base --- */
 body {
     margin: 0;
@@ -121,9 +142,9 @@ body {
 input {
     width: 100%;
     border: 1px solid var(--black);
-    margin: 10px auto 10px;
+    margin: 3px auto 3px;
     border-radius: 5px;
-    padding: 5px;
+    padding: 3px;
     box-sizing: border-box;
 }
 
@@ -131,7 +152,7 @@ input {
 button {
     background-color: var(--primary-color);
     border: none;
-    padding: 10px 20px;
+    padding: 5px 10px;
     border-radius: 10px;
     cursor: pointer;
     color: var(--white);
@@ -335,7 +356,7 @@ li.done .task-text {
     margin-bottom: 4px;
 }
 
-/* --- Settings Popup --- */
+/* ---- Popup --- */
 #settings-overlay.hidden, #add-timer-overlay.hidden {
     display: none;
 }
@@ -382,37 +403,13 @@ li.done .task-text {
     border-bottom: 1px solid var(--border-light);
 }
 
-.settings-row-title {
-    color: var(--primary-color);
-    font-weight: 900;
-    font-size: 13px;
-    margin-top: 10px;
-    margin-bottom: 5px;
-}
-
 .settings-label {
     color: var(--primary-color);
     font-size: 13px;
     font-weight: 500;
 }
 
-.settings-days {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
 
-.settings-day {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 5px 0;
-    border-bottom: 1px solid var(--border-light);
-}
-
-.settings-day:last-child {
-    border-bottom: none;
-}
 
 /* --- Toggle Switch --- */
 .toggle {
@@ -596,11 +593,15 @@ li.learned .delete-skill {
     text-align: left;
     color: var(--primary-color);
     font-weight: 800;
-    font-size: 9px;
+    font-size: 8px;
     padding-right: 0px;
     padding-left: 0px;
-    white-space: nowrap;
 }
+
+.habit-label-col {
+    width: 80px;
+}
+
 
 .habit-cell {
     cursor: pointer;

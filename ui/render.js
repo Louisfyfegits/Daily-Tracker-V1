@@ -134,8 +134,8 @@ export function renderHabits(habitData, currentDate, weekMonday) {
     const table = document.getElementById("habits-table")
     if (!table) return
 
-    const HABITS = ["Gym", "Finistride", "Creatine", "2L Water", "Run"]
-    const HABIT_KEYS = ["gym", "finistride", "creatine", "water", "run"]
+    const HABITS = ["Gym", "Run",  "Creatine", "2L Water", "No sugar"]
+    const HABIT_KEYS = ["gym", "run", "creatine", "water", "sugar"]
     const DAY_KEYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 
     // Work out which column is "today" and which is the viewed day
