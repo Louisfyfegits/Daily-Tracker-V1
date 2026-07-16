@@ -6,6 +6,7 @@ import { listenForLargeTasks, listenForGuitarSkills, listenForSkatingSkills, lis
 import { addTimer, listenForTimerDefs, listenForTimer, listenForCounter } from "./data/trackers.js"
 import { startTimerInterval } from "./logic/utils.js"
 import { updateDailyCounterDisplay, onNavigate } from "./logic/navigation.js"
+import {loadToggle, saveToggle} from "./data/preferences"
 import "./logic/events.js"
 
 // for the second version document element ids can be chained, dont split them up made it hard for coding
@@ -15,6 +16,24 @@ const kmDisplay = document.getElementById("km-display")
 const pushupsDisplay = document.getElementById("pushups-display")
 
 const loadingOverlay = document.getElementById("loading-overlay")
+
+//--local listeners, elements and references
+//darkmode
+const darkModeToggle = document.getElementById('dark-mode-toggle')
+
+darkModeToggle.addEventListener('change', function() {
+    saveToggle('darkMode', this.checked)
+    if (this.checked) {
+        document.documentElement.classList.add('dark')
+    } else {
+        document.documentElement.classList.remove('dark')
+    }
+})
+
+//--Local storage saves to load
+const savedDarkMode = localStorage.getItem('darkMode') === 'true'
+loadToggle(darkModeToggle, savedDarkMode)
+
 
 // --- Firestore Listeners ---
 
@@ -108,15 +127,6 @@ listenForWarhammerSkills((updatedSkills) => {
 
 listenForAssignments((updated) => { renderAssignments(updated) })
 
-//darkmode
-document.getElementById('dark-mode-toggle').addEventListener('change', function() {
-    console.log('Dark mode toggle changed:', this.checked)
-    if (this.checked) {
-        document.documentElement.classList.add('dark')
-    } else {
-        document.documentElement.classList.remove('dark')
-    }
-})
 
 // --- Habits ---
 // Track the current habits listener so we can unsubscribe when the date changes

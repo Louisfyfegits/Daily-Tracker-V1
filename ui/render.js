@@ -134,7 +134,7 @@ export function renderHabits(habitData, currentDate, weekMonday) {
     const table = document.getElementById("habits-table")
     if (!table) return
 
-    const HABITS = ["Gym", "Run",  "Creatine", "2L Water", "No sugar"]
+    const HABITS = ["Gym", "Run", "Creatine", "2L Water", "No sugar"]
     const HABIT_KEYS = ["gym", "run", "creatine", "water", "sugar"]
     const DAY_KEYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 

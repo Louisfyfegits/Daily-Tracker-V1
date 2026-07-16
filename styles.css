@@ -1,79 +1,146 @@
-/* --- Global Variables --- */
+/* =========================================================
+   DESIGN TOKENS
+   A focus/productivity app palette: soft indigo-tinted
+   neutrals for surfaces, an indigo→violet gradient as the
+   single "hero" accent (used sparingly on primary actions),
+   and emerald reserved only for completed/done states so
+   color always carries meaning instead of decoration.
+   ========================================================= */
 :root {
-    /* Main Theme */
-    --primary-color: rgb(0, 15, 77);
-    --primary-hover: rgb(24, 37, 132);
+    /* Brand */
+    --primary-color: #2d2988;     
+    --primary-hover: #120d47;      
+    --primary-soft: #EEF0FF;       /* tint for hover/active surfaces */
+    --primary-gradient: linear-gradient(135deg, #2d2988 0%, #120d47 100%);
 
-    /* Light Theme Colors */
-    --secondary-color: rgb(255, 255, 255);
-    --border-light: rgb(231, 238, 252);
+    /* Surfaces */
+    --bg: #F3F4FA;
+    --secondary-color: #FFFFFF;    /* card / surface color */
+    --border-light: #E7E8F2;
 
-    /* Neutral Colors */
+    /* Neutral / text */
     --white: #fff;
     --black: #000;
-    --text-dark: #333;
-    --text-light: #aaa;
-    --text-muted: #ccc;
+    --text-dark: #1D1E2C;
+    --text-light: #9598A8;
+    --text-muted: #C7C9D6;
 
-    /* Danger */
-    --danger-color: red;
-    --danger-bg: #fee;
+    /* Status */
+    --danger-color: #EF4444;
+    --danger-bg: #FDECEC;
+    --success-color: #10B981;
+    --success-soft: #E7F9F2;
+
+    /* Elevation */
+    --shadow-sm: 0 2px 4px rgba(23, 24, 45, 0.06);
+    --shadow-md: 0 8px 18px rgba(23, 24, 45, 0.08);
+    --shadow-lg: 0 18px 30px rgba(23, 24, 45, 0.14);
+
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 18px;
+
+    --ease: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 :root.dark {
-    /* Main Theme */
-    --primary-color: rgb(0, 15, 77);
-    --primary-hover: rgb(24, 37, 132);
+    /* Brand */
+    --primary-color: #818CF8;      /* indigo-400, lifted for dark bg */
+    --primary-hover: #A5B4FC;
+    --primary-soft: #262A44;
+    --primary-gradient: linear-gradient(135deg, #6366F1 0%, #A78BFA 100%);
 
-    /* Dark Theme Colors */
-    --secondary-color: rgb(30, 30, 30);
-    --border-light: rgb(50, 50, 50);
+    /* Surfaces */
+    --bg: #131320;
+    --secondary-color: #1C1D2E;
+    --border-light: #2C2D42;
 
-    /* Neutral Colors */
+    /* Neutral / text */
     --white: #fff;
     --black: #000;
-    --text-dark: #eee;
-    --text-light: #555;
-    --text-muted: #444;
+    --text-dark: #EDEDF5;
+    --text-light: #7A7D93;
+    --text-muted: #4B4D63;
 
-    /* Danger */
-    --danger-color: red;
-    --danger-bg: #fee;
+    /* Status */
+    --danger-color: #F87171;
+    --danger-bg: #3A2229;
+    --success-color: #34D399;
+    --success-soft: #16302A;
+
+    /* Elevation */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.35);
+    --shadow-lg: 0 14px 32px rgba(0, 0, 0, 0.45);
 }
 
 /* --- Base --- */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
-    padding: 10px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: 300;
+    padding: 8px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
     min-width: 400px;
+    display: flex;
+    flex-direction: column;
+    height: 600px;
+    overflow-y: auto;
+    background-color: var(--bg);
+    color: var(--text-dark);
+    transition: background-color 0.25s var(--ease), color 0.25s var(--ease);
+}
+
+#tab-content {
+    -webkit-overflow-scrolling: touch;
+}
+
+@media (display-mode: standalone) {
+    html, body {
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        transition-duration: 0.001ms !important;
+    }
 }
 
 /* --- Section Boxes --- */
 .section-div {
     width: 95%;
-    margin: 10px auto;
-    border: 2px solid var(--primary-color);
-    border-radius: 12px;
-    padding: 10px;
-    box-sizing: border-box;
+    margin: 8px auto;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    padding: 12px 10px;
     background-color: var(--secondary-color);
+    box-shadow: var(--shadow-sm);
     position: relative;
+    transition: box-shadow 0.2s var(--ease), background-color 0.25s var(--ease), border-color 0.25s var(--ease);
 }
+
 .section-header {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     position: relative;
 }
 
 .section-title {
-    color: var(--primary-color);
-    font-weight: 900;
+    color: var(--text-dark);
+    font-weight: 700;
     margin: 0;
-    font-size: 14px;
+    font-size: 13px;
+    letter-spacing: 0.02em;
     text-align: center;
 }
 
@@ -81,12 +148,13 @@ body {
     background: none;
     border: none;
     font-size: 14px;
-    color: var(--primary-color);
+    color: var(--text-light);
     cursor: pointer;
-    padding: 0;
+    padding: 4px;
+    border-radius: var(--radius-sm);
     position: absolute;
+    transition: color 0.15s var(--ease), background-color 0.15s var(--ease);
 }
-
 
 #edit-timers-btn {
     left: 0;
@@ -99,8 +167,10 @@ body {
 #settings-btn {
     right: 0;
 }
+
 #settings-btn:hover, #add-timer-btn:hover, #edit-timers-btn:hover {
-    color: var(--primary-hover);
+    color: var(--primary-color);
+    background-color: var(--primary-soft);
 }
 
 /* --- Date Nav --- */
@@ -108,8 +178,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    margin-bottom: 5px;
+    gap: 10px;
+    margin-bottom: 6px;
 }
 
 #date-display {
@@ -121,125 +191,162 @@ body {
 }
 
 .date-label {
-    font-size: 10px;
-    color: var(--primary-color);
-    font-weight: 400;
+    font-size: 9px;
+    color: var(--text-light);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
 }
 
 .date-main {
-    font-size: 18px;
-    color: var(--primary-color);
-    font-weight: 900;
+    font-size: 19px;
+    color: var(--text-dark);
+    font-weight: 800;
+    letter-spacing: -0.01em;
 }
 
 .date-day {
-    font-size: 13px;
-    color: var(--primary-color);
+    font-size: 12px;
+    color: var(--text-light);
     font-weight: 500;
 }
 
 /* --- Input --- */
 input {
     width: 100%;
-    border: 1px solid var(--black);
+    border: 1px solid var(--border-light);
+    background-color: var(--bg);
+    color: var(--text-dark);
     margin: 3px auto 3px;
-    border-radius: 5px;
-    padding: 3px;
-    box-sizing: border-box;
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.15s var(--ease), box-shadow 0.15s var(--ease);
+}
+
+input:focus-visible {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px var(--primary-soft);
 }
 
 /* --- Buttons --- */
 button {
-    background-color: var(--primary-color);
+    background: var(--primary-gradient);
     border: none;
-    padding: 5px 10px;
-    border-radius: 10px;
+    padding: 7px 14px;
+    border-radius: var(--radius-sm);
     cursor: pointer;
     color: var(--white);
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: inherit;
     font-size: 12px;
-    font-weight: bold;
+    font-weight: 600;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.12s var(--ease), box-shadow 0.12s var(--ease), filter 0.12s var(--ease);
 }
 
 button:hover {
-    background-color: var(--primary-hover);
+    filter: brightness(1.06);
+    box-shadow: var(--shadow-md);
+}
+
+button:active {
+    transform: scale(0.97);
+}
+
+button:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
 }
 
 #prev-btn, #next-btn {
-    padding: 3px 8px;
+    padding: 4px 10px;
     font-size: 12px;
-    border-radius: 6px;
+    border-radius: var(--radius-sm);
 }
 
 #btn-row, #large-btn-row, #add-timer-row {
     display: flex;
     gap: 8px;
-    margin-top: 5px;
+    margin-top: 8px;
 }
 
 .session-btn {
     background: none;
-    border: 1px solid var(--primary-color);
-    color: var(--primary-color);
+    border: 1px solid var(--border-light);
+    color: var(--text-light);
     font-size: 11px;
-    padding: 3px 8px;
-    border-radius: 6px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
     cursor: pointer;
+    box-shadow: none;
     position: absolute;
     right: 0;
+    transition: color 0.15s var(--ease), border-color 0.15s var(--ease), background-color 0.15s var(--ease);
 }
 
 .session-btn:hover {
-    background-color: var(--primary-color);
-    color: var(--white);
+    background-color: var(--primary-soft);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
 }
-
-.reset-btn
 
 /* --- Task Lists --- */
 ul {
-    margin-top: 10px;
+    margin-top: 8px;
     list-style: none;
     padding-left: 0;
     margin-bottom: 0;
 }
 
 li {
-    margin-top: 5px;
+    margin-top: 4px;
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 4px 0;
+    gap: 10px;
+    padding: 7px 6px;
+    border-radius: var(--radius-sm);
+    transition: background-color 0.15s var(--ease);
+}
+
+li:hover {
+    background-color: var(--bg);
 }
 
 .checkbox {
-    width: 18px;
-    height: 18px;
-    border: 2px solid var(--primary-color);
-    border-radius: 4px;
+    width: 19px;
+    height: 19px;
+    border: 2px solid var(--border-light);
+    border-radius: 6px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;
-    color: var(--primary-color);
+    font-size: 11px;
+    color: var(--white);
     flex-shrink: 0;
+    transition: background-color 0.15s var(--ease), border-color 0.15s var(--ease), transform 0.1s var(--ease);
+}
+
+.checkbox:active {
+    transform: scale(0.9);
 }
 
 li.done .checkbox {
-    background-color: var(--primary-color);
-    color: var(--white);
+    background-color: var(--success-color);
+    border-color: var(--success-color);
 }
 
 .task-text {
     flex: 1;
     color: var(--text-dark);
-    font-size: 14px;
+    font-size: 13.5px;
     cursor: pointer;
 }
 
 li.done .task-text {
-    text-decoration: line-through;
+    text-decoration: line-through 2px;
     color: var(--text-light);
 }
 
@@ -247,11 +354,12 @@ li.done .task-text {
     color: var(--text-muted);
     cursor: pointer;
     font-size: 12px;
-    padding: 2px 5px;
-    border-radius: 4px;
+    padding: 3px 6px;
+    border-radius: var(--radius-sm);
+    transition: color 0.15s var(--ease), background-color 0.15s var(--ease);
 }
 
-/* --- Edit Mode  for timers--- */
+/* --- Edit Mode for timers --- */
 .delete-timer {
     display: none;
 }
@@ -259,6 +367,7 @@ li.done .task-text {
 #timers-container.editing .delete-timer {
     display: inline;
 }
+
 .delete-task:hover, .delete-timer:hover {
     color: var(--danger-color);
     background-color: var(--danger-bg);
@@ -269,7 +378,7 @@ li.done .task-text {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 6px 0;
+    padding: 8px 2px;
     border-bottom: 1px solid var(--border-light);
 }
 
@@ -284,25 +393,38 @@ li.done .task-text {
 
 .timer-label {
     margin: 0;
-    font-weight: 900;
-    color: var(--primary-color);
+    font-weight: 700;
+    color: var(--text-dark);
     font-size: 11px;
     white-space: nowrap;
 }
 
 .timer-display {
     margin: 0;
-    font-size: 11px;
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
     color: var(--primary-color);
     flex: 1;
 }
 
 .reset-btn {
-    padding: 4px 8px;
+    padding: 4px 10px;
     font-size: 10px;
-    border-radius: 6px;
+    border-radius: var(--radius-sm);
     white-space: nowrap;
-    display:none;
+    background: none;
+    border: 1px solid var(--border-light);
+    color: var(--text-light);
+    box-shadow: none;
+    display: none;
+}
+
+.reset-btn:hover {
+    color: var(--danger-color);
+    border-color: var(--danger-color);
+    filter: none;
+    box-shadow: none;
 }
 
 #timers-container.editing .reset-btn {
@@ -313,47 +435,63 @@ li.done .task-text {
 #daily-counters {
     display: flex;
     align-items: center;
-    gap: 4px;
-    margin-top: 8px;
+    gap: 6px;
+    margin-top: 10px;
     flex-wrap: wrap;
 }
 
 .counter-label {
-    color: var(--primary-color);
+    color: var(--text-light);
     font-size: 10px;
-    font-weight: 900;
+    font-weight: 700;
+    letter-spacing: 0.03em;
 }
 
 .counter-display {
-    color: var(--primary-color);
-    font-size: 10px;
-    min-width: 16px;
+    color: var(--text-dark);
+    font-size: 11px;
+    font-weight: 700;
+    min-width: 18px;
     text-align: center;
 }
 
 .counter-btn {
-    background-color: transparent;
-    border: none;
+    background-color: var(--bg);
+    border: 1px solid var(--border-light);
     color: var(--primary-color);
     font-size: 12px;
-    padding: 0 3px;
+    font-weight: 700;
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    padding: 0;
     cursor: pointer;
     line-height: 1;
+    box-shadow: none;
+    transition: background-color 0.15s var(--ease), transform 0.1s var(--ease);
 }
 
 .counter-btn:hover {
-    color: var(--secondary-color);
+    background-color: var(--primary-soft);
+    filter: none;
+    box-shadow: none;
+}
+
+.counter-btn:active {
+    transform: scale(0.92);
 }
 
 .tracker-header {
     display: flex;
     justify-content: space-between;
-    font-size: 11px;
-    font-weight: 900;
-    color: var(--primary-color);
-    padding-bottom: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    padding-bottom: 6px;
     border-bottom: 1px solid var(--border-light);
-    margin-bottom: 4px;
+    margin-bottom: 6px;
 }
 
 /* ---- Popup --- */
@@ -367,7 +505,8 @@ li.done .task-text {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(19, 19, 32, 0.45);
+    backdrop-filter: blur(2px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -375,48 +514,67 @@ li.done .task-text {
 }
 
 #settings-popup, #add-timer-popup {
-    background-color: var(--white);
-    border: 2px solid var(--primary-color);
-    border-radius: 12px;
+    background-color: var(--secondary-color);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
     padding: 20px;
     width: 80%;
     max-width: 400px;
     position: relative;
+    animation: pop-in 0.18s var(--ease);
+}
+
+@keyframes pop-in {
+    from { opacity: 0; transform: scale(0.96) translateY(4px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
 #settings-close, #add-timer-close {
     background: none;
     border: none;
     font-size: 14px;
-    color: var(--primary-color);
+    color: var(--text-light);
     cursor: pointer;
-    padding: 0;
-    margin-left:auto;
+    padding: 4px;
+    border-radius: var(--radius-sm);
+    margin-left: auto;
+    box-shadow: none;
+    transition: color 0.15s var(--ease), background-color 0.15s var(--ease);
+}
 
+#settings-close:hover, #add-timer-close:hover {
+    color: var(--danger-color);
+    background-color: var(--danger-bg);
+    filter: none;
+    box-shadow: none;
 }
 
 .settings-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 8px 0;
+    padding: 10px 0;
     border-bottom: 1px solid var(--border-light);
 }
 
+.settings-row:last-child {
+    border-bottom: none;
+}
+
 .settings-label {
-    color: var(--primary-color);
+    color: var(--text-dark);
     font-size: 13px;
     font-weight: 500;
 }
-
-
 
 /* --- Toggle Switch --- */
 .toggle {
     position: relative;
     display: inline-block;
-    width: 36px;
-    height: 20px;
+    width: 38px;
+    height: 22px;
+    flex-shrink: 0;
 }
 
 .toggle input {
@@ -436,23 +594,24 @@ li.done .task-text {
     bottom: 0;
     background-color: var(--text-muted);
     border-radius: 20px;
-    transition: 0.3s;
+    transition: background-color 0.2s var(--ease);
 }
 
 .toggle-slider:before {
     position: absolute;
     content: "";
-    height: 14px;
-    width: 14px;
+    height: 16px;
+    width: 16px;
     left: 3px;
     bottom: 3px;
     background-color: var(--white);
     border-radius: 50%;
-    transition: 0.3s;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s var(--ease);
 }
 
 .toggle input:checked + .toggle-slider {
-    background-color: var(--primary-color);
+    background: var(--primary-gradient);
 }
 
 .toggle input:checked + .toggle-slider:before {
@@ -463,12 +622,12 @@ li.done .task-text {
 .skill-text {
     flex: 1;
     color: var(--text-dark);
-    font-size: 14px;
+    font-size: 13.5px;
 }
 
 li.learned .checkbox {
-    background-color: var(--primary-color);
-    color: var(--white);
+    background-color: var(--success-color);
+    border-color: var(--success-color);
 }
 
 li.learned .skill-text {
@@ -482,28 +641,43 @@ li.learned .delete-skill {
 /* --- Tabs --- */
 #tab-bar {
     display: flex;
-    gap: 8px;
+    gap: 3px;
+    background-color: var(--bg);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 3px;
 }
 
 .tab-btn {
     flex: 1;
     background-color: transparent;
-    border: 2px solid var(--primary-color);
-    color: var(--primary-color);
-    font-weight: bold;
-    border-radius: 8px;
+    border: none;
+    color: var(--white);
+    font-weight: 600;
+    font-size: 12px;
+    border-radius: 10px;
     padding: 6px 0;
     cursor: pointer;
+    box-shadow: none;
+    transition: background-color 0.18s var(--ease), color 0.18s var(--ease), box-shadow 0.18s var(--ease);
 }
 
 .tab-btn.active {
-    background-color: var(--primary-color);
-    color: var(--white);
+    background-color: var(--secondary-color);
+    box-shadow: var(--shadow-sm);
+    border: 2px solid #003560;
+    
 }
 
 .tab-btn:hover {
-    background-color: var(--primary-hover);
-    color: var(--white);
+    border: 2px solid #003560;
+    filter: none;
+    box-shadow: none;
+    
+}
+
+.tab-btn.active:hover {
+    box-shadow: var(--shadow-sm);
 }
 
 .tab-pane {
@@ -516,7 +690,7 @@ li.learned .delete-skill {
 
 /* --- Scrollbar --- */
 ::-webkit-scrollbar {
-    width: 4px;
+    width: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -524,8 +698,12 @@ li.learned .delete-skill {
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: var(--primary-color);
+    background-color: var(--text-muted);
     border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--primary-color);
 }
 
 /* --- Loading Screen --- */
@@ -535,7 +713,7 @@ li.learned .delete-skill {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: var(--white);
+    background-color: var(--bg);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -549,17 +727,17 @@ li.learned .delete-skill {
 }
 
 .spinner {
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
     border: 3px solid var(--border-light);
     border-top-color: var(--primary-color);
     border-radius: 50%;
-    animation: spin 0.8s linear infinite;
+    animation: spin 0.7s linear infinite;
 }
 
 .loading-text {
-    color: var(--primary-color);
-    font-size: 13px;
+    color: var(--text-light);
+    font-size: 12px;
     font-weight: 600;
     margin: 0;
 }
@@ -572,7 +750,7 @@ li.learned .delete-skill {
 #habits-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 8px;
+    margin-top: 10px;
     font-size: 11px;
 }
 
@@ -583,16 +761,18 @@ li.learned .delete-skill {
 }
 
 .habit-day-col {
-    color: var(--primary-color);
+    color: var(--text-light);
     font-weight: 700;
-    font-size: 10px;
-    border-bottom: 1px solid var(--primary-color);
+    font-size: 9px;
+    letter-spacing: 0.03em;
+    border-bottom: 1px solid var(--border-light);
+    padding-bottom: 6px;
 }
 
 .habit-label {
     text-align: left;
-    color: var(--primary-color);
-    font-weight: 800;
+    color: var(--text-dark);
+    font-weight: 700;
     font-size: 8px;
     padding-right: 0px;
     padding-left: 0px;
@@ -602,18 +782,23 @@ li.learned .delete-skill {
     width: 80px;
 }
 
-
 .habit-cell {
     cursor: pointer;
-    border: 1px solid rgba(0, 15, 77, 0.3);
-    border-radius: 4px;
+    background-color: var(--bg);
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
     min-width: 24px;
     height: 22px;
-    transition: background-color 0.15s;
+    transition: background-color 0.15s var(--ease), border-color 0.15s var(--ease), transform 0.1s var(--ease);
 }
 
 .habit-cell:hover {
-    background-color: rgba(0, 15, 77, 0.2);
+    border-color: var(--primary-color);
+    background-color: var(--primary-soft);
+}
+
+.habit-cell:active {
+    transform: scale(0.92);
 }
 
 .habit-cell[data-readonly="true"] {
@@ -622,10 +807,11 @@ li.learned .delete-skill {
 
 .habit-cell.habit-today {
     border-color: var(--primary-color);
-    background-color: rgba(0, 15, 77, 0.12);
+    background-color: var(--primary-soft);
 }
 
 .habit-day-col.habit-today {
+    color: var(--primary-color);
     border-bottom: 2px solid var(--primary-color);
 }
 
@@ -635,7 +821,7 @@ li.learned .delete-skill {
 }
 
 .habit-check {
-    color: var(--primary-color);
+    color: var(--success-color);
     font-size: 13px;
     font-weight: 900;
     line-height: 1;
